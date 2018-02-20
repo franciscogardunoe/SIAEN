@@ -6,5 +6,12 @@
     <include file="example.xml"/>
     <!-- Configuration for the default package. -->
     <package name="default" extends="struts-default">
+        
+        <!--ACCIONES REGISTRO-->
+        <action name="registrarEncuesta" class="model.controller.ControllerCreacion" method="registrarEncuesta">
+            <result name="success">vistas/administrador/creacion/encuesta.jsp</result>
+            <result name="error">friendzone/error/error500.jsp</result>
+        </action>
+        <!--TERMINAN ACCIONES DE REGISTRO-->
     </package>
 </struts>

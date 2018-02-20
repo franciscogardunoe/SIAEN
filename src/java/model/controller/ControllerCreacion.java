@@ -5,7 +5,9 @@
  */
 package model.controller;
 
+import static com.opensymphony.xwork2.Action.ERROR;
 import static com.opensymphony.xwork2.Action.SUCCESS;
+import java.util.Random;
 import model.bean.BeanEncuesta;
 import model.bean.BeanUsuario;
 import model.dao.DaoCreacion;
@@ -33,18 +35,31 @@ public class ControllerCreacion {
         DaoCreacion daoC = new DaoCreacion();
         BeanEncuesta beanE = new BeanEncuesta();
         beanE.setNombre(getUnaEncuesta().getNombre());
-        beanE.setDescripcion(getUnaEncuesta().getNombre());
+        beanE.setDescripcion(getUnaEncuesta().getDescripcion());
         BeanUsuario beanU = new BeanUsuario();
         beanU.setIdUsuario(1);
         beanE.setUsuario(beanU);
+        beanE.setCodigo(generarCodigo(getUnaEncuesta().getNombre().trim()));
+        if (daoC.registrarEncuesta(beanE)) {
+            return SUCCESS;
+        } else {
+            return ERROR;
+        }
+    }
 
-        //Generar código de la encuesta
-        String nombre = getUnaEncuesta().getNombre().trim();
+    public static String generarCodigo(String nombre) {
+        Random r = new Random();
+        int primero = r.nextInt(8) + 1;
+        int segundo = r.nextInt(8) + 1;
+        int tercero = r.nextInt(8) + 1;
+        String caracter1 = "" + nombre.charAt(1);
+        String codigo = "" + primero + "" + caracter1.toLowerCase() + "" + segundo + caracter1.toUpperCase() + "" + tercero + "" + nombre.charAt(2);
+        return codigo;
+    }
+
+    public String cargarEncuestas() {
 
         return SUCCESS;
     }
 
-    public boolean verificarCodigo(String código) {
-        return true;
-    }
 }
