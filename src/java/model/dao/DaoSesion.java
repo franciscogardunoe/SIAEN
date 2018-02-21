@@ -58,5 +58,42 @@ public class DaoSesion {
             }
         }
         return lista;
-    }   
+    } 
+    
+      public BeanUsuario buscarUsuario(String correo, String pass) {
+        BeanUsuario user = null;
+          try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("pa_buscarUsuario");
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                user = new BeanUsuario();
+                rs.getInt("idUsuario");
+                rs.getString("nombre");
+                rs.getString("apellido1");
+                rs.getString("apellido2");
+                rs.getString("correo");
+                rs.getString("contrasena");
+                rs.getInt("estado");
+                rs.getInt("esAdmin");
+            }
+        } catch (SQLException esql) {
+            System.out.println("Excepción SQL: " + esql.getMessage());
+        } catch (Exception e) {
+            System.out.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Excepción: " + ex.getMessage());
+            }
+        }
+        return user;
+    }
+    
 }
