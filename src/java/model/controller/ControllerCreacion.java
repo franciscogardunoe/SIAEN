@@ -7,6 +7,7 @@ package model.controller;
 
 import static com.opensymphony.xwork2.Action.ERROR;
 import static com.opensymphony.xwork2.Action.SUCCESS;
+import java.util.List;
 import java.util.Random;
 import model.bean.BeanEncuesta;
 import model.bean.BeanUsuario;
@@ -17,20 +18,29 @@ import model.dao.DaoCreacion;
  * @author franc
  */
 public class ControllerCreacion {
-
+    
     private BeanEncuesta unaEncuesta;
-
+    private List<BeanEncuesta> misEncuestas;
+    
     public ControllerCreacion() {
     }
-
+    
     public BeanEncuesta getUnaEncuesta() {
         return unaEncuesta;
     }
-
+    
     public void setUnaEncuesta(BeanEncuesta unaEncuesta) {
         this.unaEncuesta = unaEncuesta;
     }
-
+    
+    public List<BeanEncuesta> getMisEncuestas() {
+        return misEncuestas;
+    }
+    
+    public void setMisEncuestas(List<BeanEncuesta> misEncuestas) {
+        this.misEncuestas = misEncuestas;
+    }
+    
     public String registrarEncuesta() {
         DaoCreacion daoC = new DaoCreacion();
         BeanEncuesta beanE = new BeanEncuesta();
@@ -46,7 +56,7 @@ public class ControllerCreacion {
             return ERROR;
         }
     }
-
+    
     public static String generarCodigo(String nombre) {
         Random r = new Random();
         int primero = r.nextInt(8) + 1;
@@ -56,10 +66,11 @@ public class ControllerCreacion {
         String codigo = "" + primero + "" + caracter1.toLowerCase() + "" + segundo + caracter1.toUpperCase() + "" + tercero + "" + nombre.charAt(2);
         return codigo;
     }
-
-    public String cargarEncuestas() {
-
+    
+    public String consultarEncuestas() {
+        DaoCreacion daoC = new DaoCreacion();
+        setMisEncuestas(daoC.cosultarEncuestas(2));
         return SUCCESS;
     }
-
+    
 }

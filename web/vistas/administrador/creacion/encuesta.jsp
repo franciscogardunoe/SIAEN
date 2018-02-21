@@ -12,7 +12,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Free Bootstrap Admin Template : Dream</title>
+        <title>Encuestas</title>
         <!-- Bootstrap Styles-->
         <link href="<%=context%>/assets/css/bootstrap.css" rel="stylesheet" />
         <!-- FontAwesome Styles-->
@@ -144,15 +144,23 @@
                                                     <th>Código</th>
                                                     <th>Nombre Encuesta</th>
                                                     <th>Fecha Creación</th>
+                                                    <th></th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                </tr>
+                                                <s:iterator value="misEncuestas" status="stet"> 
+                                                    <tr>
+                                                        <td></td>
+                                                        <td><s:property value="codigo"/></td>
+                                                        <td><s:property value="nombre"/></td>
+                                                        <td><s:property value="fechaCreacion"/></td>
+                                                        <div class="container">
+                                                            <td> <a href="" class="btn btn-info" title="Visualizar"> <i class="fa fa-eye"></a></td>      
+                                                            <td> <a href="" class="btn btn-danger" title="Eliminar"> <i class="fa fa-t"></a></td>
+                                                        </div> 
+                                                    </tr>
+                                                </s:iterator> 
                                             </tbody>
                                         </table>
                                     </div>

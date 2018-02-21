@@ -9,8 +9,12 @@
         
         <!--ACCIONES REGISTRO-->
         <action name="registrarEncuesta" class="model.controller.ControllerCreacion" method="registrarEncuesta">
-            <result name="success">vistas/administrador/creacion/encuesta.jsp</result>
+            <result name="success">vistas/administrador/creacion/preguntasEncuesta.jsp</result>
             <result name="error">friendzone/error/error500.jsp</result>
+        </action>
+        
+        <action name="consultarEncuestas" class="model.controller.ControllerCreacion" method="consultarEncuestas">
+            <result name="success">vistas/administrador/creacion/encuesta.jsp</result>
         </action>
         <!--TERMINAN ACCIONES DE REGISTRO-->
     </package>
