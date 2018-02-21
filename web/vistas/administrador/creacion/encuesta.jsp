@@ -151,13 +151,17 @@
                                             <tbody>
                                                 <s:iterator value="misEncuestas" status="stet"> 
                                                     <tr>
-                                                        <td></td>
+                                                        <td><s:property value="%{#stet.count}"/></td>
                                                         <td><s:property value="codigo"/></td>
                                                         <td><s:property value="nombre"/></td>
                                                         <td><s:property value="fechaCreacion"/></td>
-                                                        <div class="container">
-                                                            <td> <a href="" class="btn btn-info" title="Visualizar"> <i class="fa fa-eye"></a></td>      
-                                                            <td> <a href="" class="btn btn-danger" title="Eliminar"> <i class="fa fa-t"></a></td>
+                                                        <div class="container">                                                          
+                                                            <form>
+                                                                <td><button type="submit" class="btn btn-primary" title="Ver detalles"><i class="fa fa-eye"></i></button></td>
+                                                            </form>
+                                                            <form>
+                                                                <td><button type="submit" class="btn btn-danger" title="Eliminar Encuesta"><i class="fa fa-times"></i></button></td>
+                                                            </form>
                                                         </div> 
                                                     </tr>
                                                 </s:iterator> 

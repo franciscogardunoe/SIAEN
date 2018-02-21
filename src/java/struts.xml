@@ -16,6 +16,10 @@
         <action name="consultarEncuestas" class="model.controller.ControllerCreacion" method="consultarEncuestas">
             <result name="success">vistas/administrador/creacion/encuesta.jsp</result>
         </action>
+        
+        <action name="consultarEncuesta" class="model.controller.ControllerCreacion" method="consultarEncuesta">
+            <result name="success">vistas/administrador/creacion/preguntasEncuesta.jsp</result>
+        </action>
         <!--TERMINAN ACCIONES DE REGISTRO-->
     </package>
 </struts>

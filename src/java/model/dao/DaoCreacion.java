@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.bean.BeanEncuesta;
+import model.bean.BeanPregunta;
+import model.bean.BeanTipo;
 import model.bean.BeanUsuario;
 import utilerias.ConexionSQL;
 
@@ -20,11 +22,11 @@ import utilerias.ConexionSQL;
  * @author franc
  */
 public class DaoCreacion {
-
+    
     Connection conexion;
     PreparedStatement pstm;
     ResultSet rs;
-
+    
     public boolean registrarEncuesta(BeanEncuesta unaEncuesta) {
         boolean resultado = false;
         try {
@@ -54,7 +56,7 @@ public class DaoCreacion {
         }
         return resultado;
     }
-
+    
     public List<BeanEncuesta> cosultarEncuestas(int idUsuario) {
         List<BeanEncuesta> lista = new ArrayList<>();
         try {
@@ -92,4 +94,80 @@ public class DaoCreacion {
         }
         return lista;
     }
+    
+    public BeanEncuesta consultarEncuesta(String codigo) {
+        BeanEncuesta unaEncuesta = new BeanEncuesta();
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("pa_consultarEncuesta ?");
+            pstm.setString(1, codigo);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                unaEncuesta.setIdEncuesta(rs.getInt("idEncuesta"));
+                unaEncuesta.setNombre(rs.getString("nombre"));
+                unaEncuesta.setDescripcion(rs.getString("descripcion"));
+                unaEncuesta.setCodigo(rs.getString("codigo"));
+                unaEncuesta.setFechaCreacion(rs.getString("fechaCreacion"));
+                unaEncuesta.setEstado(rs.getInt("estado"));
+                BeanUsuario unUsuario = new BeanUsuario();
+                unUsuario.setIdUsuario(rs.getInt("idUsuario"));
+                unaEncuesta.setUsuario(unUsuario);
+            }
+        } catch (SQLException esql) {
+            System.out.println("Excepción SQL: " + esql.getMessage());
+        } catch (Exception e) {
+            System.out.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Excepción: " + ex.getMessage());
+            }
+        }
+        return unaEncuesta;
+    }
+    
+    public List<BeanPregunta> cosultarPreguntas(String codigo) {
+        List<BeanPregunta> lista = new ArrayList<>();
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_consultarPreguntas ?");
+            pstm.setString(1, codigo);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                BeanPregunta unaPregunta = new BeanPregunta();
+                unaPregunta.setIdPregunta(rs.getInt("idPregunta"));
+                unaPregunta.setPregunta(rs.getString("pregunta"));
+                unaPregunta.setObligatoria(rs.getInt("obligatoria"));
+                unaPregunta.setEstado(rs.getInt("estado"));
+                BeanTipo unTipo = new BeanTipo();
+                unTipo.setIdTipo(rs.getInt("idTipo"));
+                unTipo.setTipo(rs.getString("tipo"));
+                unaPregunta.setTipo(unTipo);
+                lista.add(unaPregunta);
+            }
+        } catch (SQLException esql) {
+            System.out.println("Excepción SQL: " + esql.getMessage());
+        } catch (Exception e) {
+            System.out.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Excepción: " + ex.getMessage());
+            }
+        }
+        return lista;
+    }
+    
 }
