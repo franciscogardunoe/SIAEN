@@ -9,7 +9,7 @@
         
         <!--ACCIONES REGISTRO-->
         <action name="registrarEncuesta" class="model.controller.ControllerCreacion" method="registrarEncuesta">
-            <result name="success">vistas/administrador/creacion/preguntasEncuesta.jsp</result>
+            <result name="success" type="chain">consultarEncuesta</result>
             <result name="error">friendzone/error/error500.jsp</result>
         </action>
         
@@ -19,6 +19,11 @@
         
         <action name="consultarEncuesta" class="model.controller.ControllerCreacion" method="consultarEncuesta">
             <result name="success">vistas/administrador/creacion/preguntasEncuesta.jsp</result>
+        </action>
+        
+        <action name="modificarEncuesta" class="model.controller.ControllerCreacion" method="modificarEncuesta">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error" type="chain">consultarEncuesta</result>
         </action>
         <!--TERMINAN ACCIONES DE REGISTRO-->
     </package>

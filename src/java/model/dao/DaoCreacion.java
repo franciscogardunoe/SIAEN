@@ -22,11 +22,11 @@ import utilerias.ConexionSQL;
  * @author franc
  */
 public class DaoCreacion {
-    
+
     Connection conexion;
     PreparedStatement pstm;
     ResultSet rs;
-    
+
     public boolean registrarEncuesta(BeanEncuesta unaEncuesta) {
         boolean resultado = false;
         try {
@@ -56,7 +56,7 @@ public class DaoCreacion {
         }
         return resultado;
     }
-    
+
     public List<BeanEncuesta> cosultarEncuestas(int idUsuario) {
         List<BeanEncuesta> lista = new ArrayList<>();
         try {
@@ -94,7 +94,7 @@ public class DaoCreacion {
         }
         return lista;
     }
-    
+
     public BeanEncuesta consultarEncuesta(String codigo) {
         BeanEncuesta unaEncuesta = new BeanEncuesta();
         try {
@@ -110,7 +110,7 @@ public class DaoCreacion {
                 unaEncuesta.setFechaCreacion(rs.getString("fechaCreacion"));
                 unaEncuesta.setEstado(rs.getInt("estado"));
                 BeanUsuario unUsuario = new BeanUsuario();
-                unUsuario.setIdUsuario(rs.getInt("idUsuario"));
+                unUsuario.setIdUsuario(rs.getInt("idUsuarioCreo"));
                 unaEncuesta.setUsuario(unUsuario);
             }
         } catch (SQLException esql) {
@@ -131,7 +131,7 @@ public class DaoCreacion {
         }
         return unaEncuesta;
     }
-    
+
     public List<BeanPregunta> cosultarPreguntas(String codigo) {
         List<BeanPregunta> lista = new ArrayList<>();
         try {
@@ -169,5 +169,33 @@ public class DaoCreacion {
         }
         return lista;
     }
-    
+
+    public boolean modificarEncuesta(BeanEncuesta unaEncuesta) {
+        boolean resultado = false;
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_modificarEncuesta ?,?,?");
+            pstm.setInt(1, unaEncuesta.getIdEncuesta());
+            pstm.setString(2, unaEncuesta.getNombre());
+            pstm.setString(3, unaEncuesta.getDescripcion());
+            resultado = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            System.err.println("Excepción SQL: " + ex.getMessage());
+        } catch (Exception e) {
+            System.err.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception exc) {
+                System.err.println("Excepción: " + exc.getMessage());
+            }
+        }
+        return resultado;
+    }
+
 }

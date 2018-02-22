@@ -26,6 +26,10 @@ public class ControllerCreacion {
     private String codigo;
     private int numeroPreguntas;
 
+    private String accion;
+    private String mensaje;
+    private String tipoMensaje;
+
     public ControllerCreacion() {
     }
 
@@ -69,9 +73,36 @@ public class ControllerCreacion {
         this.numeroPreguntas = numeroPreguntas;
     }
 
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public String getAccion() {
+        return accion;
+    }
+
+    public void setAccion(String accion) {
+        this.accion = accion;
+    }
+
+    public String getTipoMensaje() {
+        return tipoMensaje;
+    }
+
+    public void setTipoMensaje(String tipoMensaje) {
+        this.tipoMensaje = tipoMensaje;
+    }
+
     public String registrarEncuesta() {
         DaoCreacion daoC = new DaoCreacion();
         BeanEncuesta beanE = new BeanEncuesta();
+        setAccion("");
+        setMensaje("");
+        setTipoMensaje("");
         beanE.setNombre(getUnaEncuesta().getNombre());
         beanE.setDescripcion(getUnaEncuesta().getDescripcion());
         BeanUsuario beanU = new BeanUsuario();
@@ -83,8 +114,14 @@ public class ControllerCreacion {
             setUnaEncuesta(daoC.consultarEncuesta(getCodigo()));
             setMisPreguntas(daoC.cosultarPreguntas(getCodigo()));
             setNumeroPreguntas(getMisPreguntas().size());
+            setAccion("Correcto");
+            setMensaje("La Encuesta fue registrada exitosamente");
+            setTipoMensaje("success");
             return SUCCESS;
         } else {
+            setAccion("Error");
+            setMensaje("La Encuesta no fue registrada");
+            setTipoMensaje("error");
             return ERROR;
         }
     }
@@ -107,8 +144,30 @@ public class ControllerCreacion {
 
     public String consultarEncuesta() {
         DaoCreacion daoC = new DaoCreacion();
-        setUnaEncuesta(daoC.consultarEncuesta(getUnaEncuesta().getCodigo()));
+        setUnaEncuesta(daoC.consultarEncuesta(getCodigo()));
         setMisPreguntas(daoC.cosultarPreguntas(getCodigo()));
         return SUCCESS;
+    }
+
+    public String modificarEncuesta() {
+        DaoCreacion daoC = new DaoCreacion();
+        BeanEncuesta beanE = new BeanEncuesta();
+        setAccion("");
+        setMensaje("");
+        setTipoMensaje("");
+        beanE.setIdEncuesta(getUnaEncuesta().getIdEncuesta());
+        beanE.setNombre(getUnaEncuesta().getNombre());
+        beanE.setDescripcion(getUnaEncuesta().getDescripcion());
+        if (daoC.modificarEncuesta(beanE)) {
+            setAccion("Correcto");
+            setMensaje("Los datos de la Encuesta fueron modificados exitosamente");
+            setTipoMensaje("success");
+            return SUCCESS;
+        } else {
+            setAccion("Error");
+            setMensaje("Los datos de la Encuesta no fueron modificados");
+            setTipoMensaje("error");
+            return ERROR;
+        }
     }
 }
