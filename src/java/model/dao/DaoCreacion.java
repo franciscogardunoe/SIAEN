@@ -198,4 +198,34 @@ public class DaoCreacion {
         return resultado;
     }
 
+    public boolean registrarPreguntaAbierta(BeanPregunta unaPregunta) {
+        boolean resultado = false;
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_registrarPreguntaAbierta ?,?,?,?");
+            pstm.setString(1, unaPregunta.getPregunta());
+            pstm.setInt(2, unaPregunta.getObligatoria());
+            pstm.setInt(3, unaPregunta.getTipo().getIdTipo());
+            pstm.setInt(4, unaPregunta.getEncuesta().getIdEncuesta());
+            resultado = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            System.err.println("Excepción SQL: " + ex.getMessage());
+            return true;
+        } catch (Exception e) {
+            System.err.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception exc) {
+                System.err.println("Excepción: " + exc.getMessage());
+            }
+        }
+        return resultado;
+    }
+
 }

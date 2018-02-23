@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 import model.bean.BeanEncuesta;
 import model.bean.BeanPregunta;
+import model.bean.BeanTipo;
 import model.bean.BeanUsuario;
 import model.dao.DaoCreacion;
 
@@ -21,6 +22,7 @@ import model.dao.DaoCreacion;
 public class ControllerCreacion {
 
     private BeanEncuesta unaEncuesta;
+    private BeanPregunta unaPregunta;
     private List<BeanEncuesta> misEncuestas;
     private List<BeanPregunta> misPreguntas;
     private String codigo;
@@ -97,6 +99,14 @@ public class ControllerCreacion {
         this.tipoMensaje = tipoMensaje;
     }
 
+    public BeanPregunta getUnaPregunta() {
+        return unaPregunta;
+    }
+
+    public void setUnaPregunta(BeanPregunta unaPregunta) {
+        this.unaPregunta = unaPregunta;
+    }
+
     public String registrarEncuesta() {
         DaoCreacion daoC = new DaoCreacion();
         BeanEncuesta beanE = new BeanEncuesta();
@@ -169,5 +179,40 @@ public class ControllerCreacion {
             setTipoMensaje("error");
             return ERROR;
         }
+    }
+
+    public String registrarPreguntaAbierta() {
+        DaoCreacion daoC = new DaoCreacion();
+        BeanPregunta unaP = new BeanPregunta();
+        setAccion("");
+        setMensaje("");
+        setTipoMensaje("");
+        unaP.setPregunta(getUnaPregunta().getPregunta());
+        unaP.setObligatoria(getUnaPregunta().getObligatoria());
+        BeanTipo unT = new BeanTipo();
+        unT.setIdTipo(3);
+        unaP.setTipo(unT);
+        BeanEncuesta unaE = new BeanEncuesta();
+        unaE.setIdEncuesta(getUnaEncuesta().getIdEncuesta());
+        unaP.setEncuesta(unaE);
+        if (daoC.registrarPreguntaAbierta(unaP)) {
+            setAccion("Correcto");
+            setMensaje("La Pregunta fue registrada exitosamente");
+            setTipoMensaje("success");
+            return SUCCESS;
+        } else {
+            setAccion("Error");
+            setMensaje("La Pregunta no fue registrada");
+            setTipoMensaje("error");
+            return ERROR;
+        }
+    }
+
+    public String registrarPreguntaSeleccion() {
+        return SUCCESS;
+    }
+
+    public String registrarPreguntaOpcion() {
+        return SUCCESS;
     }
 }
