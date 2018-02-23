@@ -294,7 +294,7 @@
                                                             <label>Pregunta obligatoria</label>
                                                             <br></br>
                                                             <label class="radio-inline">
-                                                                <input type="radio" name="unaPregunta.esObligatoria" id="esObligatoria" value="1"> Si
+                                                                <input type="radio" name="unaPregunta.bligatoria" id="esObligatoria" value="1"> Si
                                                             </label>
                                                             <label class="radio-inline">
                                                                 <input type="radio" name="unaPregunta.esObligatoria" id="esObligatoria" value="0"> No
