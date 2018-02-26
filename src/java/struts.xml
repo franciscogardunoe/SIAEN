@@ -16,7 +16,10 @@
         <action name="cerrarSesion" class="model.controller.ControllerSesion" method="cerrarSesion">
             <result name="success">index.jsp</result>
         </action>
-
+        
+        <action name="registrarUsuario" class="model.controller.ControllerUsuario" method="registrarUsuario">
+            <result name="success">index.jsp</result>
+        </action>
 
         <!--TERMINAN ACCIONES DE REGISTRO-->
     </package>

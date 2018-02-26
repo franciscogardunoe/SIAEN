@@ -512,3 +512,11 @@ input.input100 {
     opacity: 1;
   }
 }
+
+
+/**Agregado recientemente*/
+a.singup {
+    margin-left: 10px !important;
+    color: #02a2ff;
+    font-weight: bold !important;
+}

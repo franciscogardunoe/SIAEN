@@ -76,19 +76,6 @@
             <result name="success" type="chain">consultarPregunta</result>
             <result name="error" type="chain">consultarPregunta</result>
         </action>
-        <!--
-        ACCION QUE REDIRECCIONA A LA CUENTA LOGUEADA
-        (DEBE SER EL ACCION SUCCESS DE LAS ACCIONES QUE MODIFICIAN, ELIMINAN
-        O AGREGAN INFORMACIÓN A LA BASE DE DATOS)
-        -->
-        
-        
-        <!--
-        ACCIONES DE CARTERA
-        -->
-        
-        
-        
-        
+
     </package>
 </struts>

@@ -14,6 +14,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
+<!-- Bootstrap Styles-->
+        <link href="<%=context%>/assets/css/bootstrap.css" rel="stylesheet" />
+        <!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="<%=context%>/assets/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="<%=context%>/assets/vendor/bootstrap/css/bootstrap.min.css">
@@ -75,11 +78,58 @@
 						<button type="submit" class="login100-form-btn">
 							Iniciar Sesión
 						</button>
+                                            
 					</div>
-				</form>
+				</form>     
+                                 <a href="#mytoogle" class="singup" data-toggle="modal" data-target="#exampleModal">¡Registrarme!</a>
 			</div>
+                                
 		</div>
 	</div>
+                                
+<!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Registro de usuario</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form role="form" name="registrar" action="<%=context%>/registrarUsuario" method="post">
+                                    <div class="modal-body">
+
+                                        <div class="form-group">
+                                            <label>Nombre</label>
+                                            <input type="text" class="form-control" name="unUsuario.nombre" id="nombre" placeholder="Nombre" required="" min="2" max="45">                                       
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Apellido 1</label>
+                                            <input type="text" class="form-control" name="unUsuario.apellido1" id="apellido1" placeholder="Apellido 1" required="" min="2" max="45">   
+                                        </div>      
+                                        <div class="form-group">
+                                            <label>Apellido 2</label>
+                                            <input type="text" class="form-control" name="unUsuario.apellido2" id="apellido2" placeholder="Apellido 2" required="" min="2" max="45">   
+                                        </div>  
+                                        <div class="form-group">
+                                            <label>Correo</label>
+                                            <input type="email" class="form-control" name="unUsuario.correo" id="correo" placeholder="info@dominio.com" required="" >   
+                                        </div> 
+                                        <div class="form-group">
+                                            <label>Contraseña</label>
+                                            <input type="password" class="form-control" name="unUsuario.contrasena" id="correo" required="" min="2" max="15">   
+                                        </div> 
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary">Registrar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 	
 <!--===============================================================================================-->
 	<script src="<%=context%>/assets/vendor/jquery/jquery-3.2.1.min.js"></script>
