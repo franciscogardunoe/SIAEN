@@ -177,46 +177,76 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-12">    
-                            <!-- Advanced Tables -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Preguntas
-                                </div>
-                                <div class="panel-body">
-                                    <button type="button" class="btn btn-primary btn pull-right" data-toggle="modal" data-target="#exampleModal">
-                                        <i class="fa fa-plus"></i>&nbsp;Nueva Opción
-                                    </button><br></br><br>
-                                        <div class="table-responsive">
-                                            <s:set name="numero" value="numeroOpciones"/>
-                                            <s:if test="%{#numero>0}">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Opcion</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <s:iterator value="misOpciones" status="stet"> 
-                                                            <tr>
-                                                                <td><s:property value="%{#stet.count}"/></td>
-                                                                <td><s:property value="opcion"/></td>
-                                                            </tr>
-                                                        </s:iterator> 
-                                                    </tbody>
-                                                </table>
+                        <s:set name="tip" value="unaPregunta.tipo.tipo"/>
+                        <s:if test="%{#tip!='Abierta'}">
+                            <div class="col-md-12">    
+                                <!-- Advanced Tables -->
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Opciones
+                                    </div>
+                                    <div class="panel-body">
+                                        <s:set name="numero" value="numeroOpciones"/>
+                                        <s:if test="%{#numero<=4}">
+                                            <button type="button" class="btn btn-primary btn pull-right" data-toggle="modal" data-target="#insertarOpcion">
+                                                <i class="fa fa-plus"></i>&nbsp;Nueva Opción
+                                            </button><br></br><br>
                                             </s:if>
-                                            <s:else>
-                                                <div class="alert alert-warning">
-                                                    <strong>¡Advertencia!</strong> Aún no hay opciones registradas.
-                                                </div>
-                                            </s:else> 
-                                        </div>
+                                            <div class="table-responsive">
+
+
+                                                <s:if test="%{#numero>0}">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Opcion</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <s:iterator value="misOpciones" status="stet"> 
+                                                                <tr>
+                                                                    <td><s:property value="%{#stet.count}"/></td>
+                                                                    <td><s:property value="opcion"/></td>
+                                                                </tr>
+                                                            </s:iterator> 
+                                                        </tbody>
+                                                    </table>
+                                                </s:if>
+                                                <s:else>
+                                                    <div class="alert alert-warning">
+                                                        <strong>¡Advertencia!</strong> Aún no hay opciones registradas.
+                                                    </div>
+                                                </s:else> 
+                                            </div>
+                                    </div>
                                 </div>
+                                <!--End Advanced Tables -->
                             </div>
-                            <!--End Advanced Tables -->
+                        </s:if>
+                        <!-- Modal -->
+                        <div class="modal fade" id="insertarOpcion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <form role="form" name="registrar" action="<%=context%>/registrarOpcion" method="post">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">REGISTRAR OPCIÓN</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="text" id="idPregunta" name="unaPregunta.idPregunta" value="<s:property value="unaPregunta.idPregunta"/>" hidden="">
+                                                <div class="form-group">
+                                                    <label>Opción</label>
+                                                    <input type=text" class="form-control" rows="3" name="opcion1" id="opcion1" placeholder="Opción" max="150">
+                                                </div> 
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Aceptar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>            
                         </div>
                     </div>
 

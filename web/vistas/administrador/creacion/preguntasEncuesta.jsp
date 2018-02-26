@@ -176,10 +176,10 @@
                                                     <div class="panel-body">
                                                         <div class="table-responsive">
                                                             <h3><b><s:property value="unaEncuesta.codigo"/></b></h3>
-                                                            <br></br>
-                                                            <div class="alert alert-info">
-                                                                <strong>¡Aviso!</strong> Proporcione este código a los usuarios para responder la encuesta que ha creado.
-                                                            </div>
+                                                            <br>
+                                                                <div class="alert alert-info">
+                                                                    <strong>¡Aviso!</strong> Proporcione este código a los usuarios para responder la encuesta que ha creado.
+                                                                </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -188,10 +188,9 @@
                                                         Informes
                                                     </div>
                                                     <div class="panel-body">
+                                                        Numero de personas que han constado la encuesta
                                                         <div class="table-responsive">
-                                                            <center><button class="btn btn-info btn" data-toggle="modal" data-target="#myModal">
-                                                                    <i class="fa fa-signal"></i>&nbsp; Ver Informes
-                                                                </button></center>
+                                                            <strong><h2>15</h2></strong>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -238,7 +237,12 @@
                                                                     </s:else> 
                                                                 </td>
                                                                 <td><s:property value="tipo.tipo"/></td>
-                                                                <div class="container">                                                          
+                                                                <div class="container">
+                                                                    <form role="form" name="consultar" action="<%=context%>/consultarPregunta" method="POST">
+                                                                        <input id="idPregunta" name="unaPregunta.idPregunta" value="<s:property value="idPregunta"/>" hidden=""/>
+                                                                        <input id="codigo" name="codigo" value="<s:property value="codigo"/>" hidden=""/>
+                                                                        <td><button type="submit" class="btn btn-info" title="Ver informes"><i class="fa fa-signal"></i></button></td>
+                                                                    </form>
                                                                     <form role="form" name="consultar" action="<%=context%>/consultarPregunta" method="POST">
                                                                         <input id="idPregunta" name="unaPregunta.idPregunta" value="<s:property value="idPregunta"/>" hidden=""/>
                                                                         <input id="codigo" name="codigo" value="<s:property value="codigo"/>" hidden=""/>

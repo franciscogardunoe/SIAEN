@@ -54,6 +54,11 @@
         <action name="consultarPregunta" class="model.controller.ControllerCreacion" method="consultarPregunta">
             <result name="success">vistas/administrador/creacion/detallePregunta.jsp</result>
         </action>
+        
+        <action name="registrarOpcion" class="model.controller.ControllerCreacion" method="registrarOpcion">
+            <result name="success" type="chain">consultarPregunta</result>
+            <result name="error" type="chain">consultarPregunta</result>
+        </action>
         <!--TERMINAN ACCIONES DE REGISTRO-->
     </package>
 </struts>
