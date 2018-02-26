@@ -5,6 +5,7 @@
  */
 package model.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +22,7 @@ import utilerias.ConexionSQL;
 public class DaoSesion {
     Connection conexion;
     PreparedStatement pstm;
+    CallableStatement call;
     ResultSet rs;
     
     public List<BeanUsuario> cosultarUsuarios() {
@@ -61,21 +63,22 @@ public class DaoSesion {
     } 
     
       public BeanUsuario buscarUsuario(String correo, String pass) {
-        BeanUsuario user = null;
+        BeanUsuario usuario = new BeanUsuario();
           try {
             conexion = ConexionSQL.obtenerConexion();
-            pstm = conexion.prepareStatement("pa_buscarUsuario");
-            rs = pstm.executeQuery();
+            call = conexion.prepareCall("{call pa_iniciarSession(?,?)}");
+            call.setString(1, correo);
+            call.setString(2, pass);
+            rs = call.executeQuery();
             while (rs.next()) {
-                user = new BeanUsuario();
-                rs.getInt("idUsuario");
-                rs.getString("nombre");
-                rs.getString("apellido1");
-                rs.getString("apellido2");
-                rs.getString("correo");
-                rs.getString("contrasena");
-                rs.getInt("estado");
-                rs.getInt("esAdmin");
+                usuario.setIdUsuario(rs.getInt("idUsuario"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setApellido1(rs.getString("apellido1"));
+                usuario.setApellido2(rs.getString("apellido2"));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setContrasena(rs.getString("contrasena"));
+                usuario.setEstado(rs.getInt("estado"));
+                usuario.setEsAdmin(rs.getInt("esAdmin"));
             }
         } catch (SQLException esql) {
             System.out.println("Excepción SQL: " + esql.getMessage());
@@ -89,11 +92,17 @@ public class DaoSesion {
                 if (pstm != null) {
                     pstm.close();
                 }
+                if (rs != null) {
+                    rs.close();
+                }
+                if (call != null) {
+                    call.close();
+                }
             } catch (Exception ex) {
                 System.out.println("Excepción: " + ex.getMessage());
             }
         }
-        return user;
+        return usuario;
     }
     
 }

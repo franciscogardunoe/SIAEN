@@ -20,7 +20,7 @@
         <!-- Custom Styles-->
         <link href="<%=context%>/assets/css/custom-styles.css" rel="stylesheet" />
         <!-- Google Fonts-->
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+        
         <!--Libreria de JQuery-->
         <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 
@@ -38,8 +38,16 @@
                 });
                 </s:if>
             </script>
+                <!--Validación de sesión -->
+        <s:if test="#session.logged != 'yes'">
+            <script>
+                window.location.replace("<%=context%>/index.jsp");
+            </script>
+        </s:if>
     </head>
     <body>
+        
+          <!-- Aquí comienza el inicio empty-->   
         <div id="wrapper">
             <nav class="navbar navbar-default top-navbar" role="navigation">
                 <div class="navbar-header">
@@ -49,21 +57,18 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.jsp">Dream</a>
+                    <a class="navbar-brand" href="<%=context%>/vistaPrincipal">SIAEN</a>
                 </div>
 
                 <ul class="nav navbar-top-links navbar-right">
+                    <li class="name">¡Hola <s:property value="#session.name"/>!</li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
                             <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                            </li>
                             <li class="divider"></li>
-                            <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            <li><a href="<%=context%>/cerrarSesion"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
                             </li>
                         </ul>
                         <!-- /.dropdown-user -->
@@ -74,64 +79,22 @@
             <!--/. NAV TOP  -->
             <nav class="navbar-default navbar-side" role="navigation">
                 <div class="sidebar-collapse">
-                    <ul class="nav" id="main-menu">
-
+                    <ul class="nav" id="main-menu"> 
                         <li>
-                            <a href="index.jsp"><i class="fa fa-dashboard"></i> Dashboard</a>
+                            <a  href="<%=context%>/vistaPrincipal"><i class="fa fa-fw fa-file"></i> Inicio</a>
+                        </li>
+                         <li>
+                            <a class="active-menu" href="<%=context%>/consultarEncuestas"><i class="fa fa-dashboard"></i>Encuestas creadas</a>
                         </li>
                         <li>
-                            <a href="ui-elements.jsp"><i class="fa fa-desktop"></i> UI Elements</a>
-                        </li>
-                        <li>
-                            <a href="chart.jsp"><i class="fa fa-bar-chart-o"></i> Charts</a>
-                        </li>
-                        <li>
-                            <a href="tab-panel.jsp"><i class="fa fa-qrcode"></i> Tabs & Panels</a>
-                        </li>
-
-                        <li>
-                            <a href="table.jsp"><i class="fa fa-table"></i> Responsive Tables</a>
-                        </li>
-                        <li>
-                            <a href="form.jsp"><i class="fa fa-edit"></i> Forms </a>
-                        </li>
-
-
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Link</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Link</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Link<span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Link</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Link</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Link</a>
-                                        </li>
-
-                                    </ul>
-
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="active-menu" href="empty.jsp"><i class="fa fa-fw fa-file"></i> Empty Page</a>
+                            <a href="#"><i class="fa fa-desktop"></i>Encuestas contestadas</a>
                         </li>
                     </ul>
 
                 </div>
 
-            </nav>
+            </nav>          
+   <!-- Aquí termina el inicio empty-->    
             <!-- /. NAV SIDE  -->
             <div id="page-wrapper" >
                 <div id="page-inner">

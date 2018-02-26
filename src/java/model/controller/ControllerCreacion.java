@@ -228,7 +228,7 @@ public class ControllerCreacion {
         setMisEncuestas(daoC.cosultarEncuestas(2));
         return SUCCESS;
     }
-
+    
     public String consultarEncuesta() {
         setAccion("");
         setMensaje("");

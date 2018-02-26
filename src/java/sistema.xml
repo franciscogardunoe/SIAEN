@@ -4,7 +4,7 @@
 
 <struts>
     <!-- Configuration for the default package. -->
-    <package name="sistema" extends="struts-default,jasperreports-default">
+    <package name="sistema" extends="struts-default, json-default">
         <interceptors>
             <interceptor name="filtroSesion" class="filter.InterceptorSession"/>
             <interceptor-stack name="colaSesion">
@@ -21,126 +21,72 @@
         <!--
         ACCIONES EXCLUSIVAS PARA USUARIOS LOGUEADOS
         -->
+        <action name="vistaPrincipal" class="model.controller.ControllerSesion" method="vistaPrincipal">
+            <result name="success">vistas/administrador/creacion/vistaPrincipal.jsp</result>
+        </action>
         
+        <action name="registrarEncuesta" class="model.controller.ControllerCreacion" method="registrarEncuesta">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error">friendzone/error/error500.jsp</result>
+        </action>
+        
+        <action name="consultarEncuestas" class="model.controller.ControllerCreacion" method="consultarEncuestas">
+            <result name="success">vistas/administrador/creacion/encuesta.jsp</result>
+        </action>
+        
+        <action name="consultarEncuesta" class="model.controller.ControllerCreacion" method="consultarEncuesta">
+            <result name="success">vistas/administrador/creacion/preguntasEncuesta.jsp</result>
+        </action>
+        
+        <action name="modificarEncuesta" class="model.controller.ControllerCreacion" method="modificarEncuesta">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error" type="chain">consultarEncuesta</result>
+        </action>
+        
+        <action name="eliminarEncuesta" class="model.controller.ControllerCreacion" method="eliminarEncuesta">
+            <result name="success" type="chain">consultarEncuestas</result>
+            <result name="error" type="chain">consultarEncuestas</result>
+        </action>
+        
+        <action name="registrarPreguntaAbierta" class="model.controller.ControllerCreacion" method="registrarPreguntaAbierta">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error" type="chain">consultarEncuesta</result>
+        </action>
+        
+        <action name="registrarPreguntaOpcion" class="model.controller.ControllerCreacion" method="registrarPreguntaOpcion">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error" type="chain">consultarEncuesta</result>
+        </action>
+        
+        <action name="registrarPreguntaMultiple" class="model.controller.ControllerCreacion" method="registrarPreguntaMultiple">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error" type="chain">consultarEncuesta</result>
+        </action>
+        
+        <action name="eliminarPregunta" class="model.controller.ControllerCreacion" method="eliminarPregunta">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error" type="chain">consultarEncuesta</result>
+        </action>
+        
+        <action name="consultarPregunta" class="model.controller.ControllerCreacion" method="consultarPregunta">
+            <result name="success">vistas/administrador/creacion/detallePregunta.jsp</result>
+        </action>
+        
+        <action name="registrarOpcion" class="model.controller.ControllerCreacion" method="registrarOpcion">
+            <result name="success" type="chain">consultarPregunta</result>
+            <result name="error" type="chain">consultarPregunta</result>
+        </action>
         <!--
         ACCION QUE REDIRECCIONA A LA CUENTA LOGUEADA
         (DEBE SER EL ACCION SUCCESS DE LAS ACCIONES QUE MODIFICIAN, ELIMINAN
         O AGREGAN INFORMACIÓN A LA BASE DE DATOS)
         -->
-        <action name="miCuenta" class="control.ControlCartera" method="miCuenta">
-            <result name="success">/JSP/usuario/function/MenuUsuario.jsp</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
         
         
         <!--
         ACCIONES DE CARTERA
         -->
-        <action name="modificarCartera" class="control.ControlCartera" method="modificarCartera">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
         
-        <action name="eliminarCartera" class="control.ControlCartera" method="eliminarCartera">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        
-        <action name="crearCartera" class="control.ControlCartera" method="crearCartera">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        
-        <action name="abonarCartera" class="control.ControlCartera" method="abonarCartera">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        
-        
-        <!--ACCIONES DE USUARIO-->
-        <action name="modificarPerfil" class="control.ControlUsuario" method="modificarPerfil">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        
-        <action name="cambiarImagenPerfil" class="control.ControlUsuario" method="cambiarImagenPerfil">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        
-        
-        
-        
-        
-        <!--
-        ACCIONES CREACION DE REPORTES
-        -->
-        <action name="reporteGastos" class="control.ControlReporte" method="reporteGastos">
-            <result name="success" type="jasper">
-                <param name="location">/report/Gastos.jasper</param>                
-                <param name="reportParameters">params</param>
-                <param name="connection">con</param>
-                <param name="dataSource">gastos</param>
-                <param name="format">PDF</param>
-            </result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        
-        <action name="reporteAbonos" class="control.ControlReporte" method="reporteAbonos">
-            <result name="success" type="jasper">
-                <param name="location">/report/Abonos.jasper</param>                
-                <param name="reportParameters">params</param>
-                <param name="connection">con</param>
-                <param name="dataSource">abonos</param>
-                <param name="format">PDF</param>
-            </result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        
-        <action name="reporteTransacciones" class="control.ControlReporte" method="reporteTransacciones">
-            <result name="success" type="jasper">
-                <param name="location">/report/Transacciones.jasper</param>                
-                <param name="reportParameters">params</param>
-                <param name="connection">con</param>
-                <param name="dataSource">transacciones</param>
-                <param name="format">PDF</param>
-            </result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-    
-        
-        
-        
-        <!--ACCIONES DE TRANSFERENCIA-->
-        
-        <action name="registrarTransaccion" class="control.ControlTransaccion" method="registrarTransaccion">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        
-        <!--ACCIONES DE GASTOS-->
-        <action name="registrarGasto" class="control.ControlGasto" method="registrarGasto">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        <action name="eliminarGasto" class="control.ControlGasto" method="eliminarGasto">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        
-        <!--ACCIONES PARA CATEGORÍAS-->
-        <action name="registrarCategoria" class="control.ControlCategoria" method="registrarCategoria">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        <action name="eliminarCategoria" class="control.ControlCategoria" method="eliminarCategoria">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action>
-        <action name="modificarCategoria" class="control.ControlCategoria" method="modificarCategoria">
-            <result name="success" type="redirect">miCuenta</result>
-            <result name="error">/JSP/error/error.jsp</result>
-        </action> 
         
         
         

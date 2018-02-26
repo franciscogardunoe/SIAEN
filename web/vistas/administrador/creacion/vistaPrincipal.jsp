@@ -12,7 +12,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Free Bootstrap Admin Template : Dream</title>
+        <title>Vista Princiapl</title>
         <!-- Bootstrap Styles-->
         <link href="<%=context%>/assets/css/bootstrap.css" rel="stylesheet" />
         <!-- FontAwesome Styles-->
@@ -21,22 +21,14 @@
         <link href="<%=context%>/assets/css/custom-styles.css" rel="stylesheet" />
         <!-- Google Fonts-->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-        <!-- Librerias de SweetAlert-->
-        <script src="<%=context%>/sweetalert-master/dist/sweetalert.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="<%=context%>/sweetalert-master/dist/sweetalert.css">
-            <!--Terminan librerías de SweerAlert-->
+        <s:if test="#session.logged != 'yes'">
             <script>
-                $(document).ready(function ()
-                {
-                <s:set name="a" value="accion"/>
-                <s:if test="%{#a!= '' }">
-                    swal("¡<s:property value="accion"/>!", "<s:property value="mensaje"/>", "<s:property value="tipoMensaje"/>");
-                });
-                </s:if>
+                window.location.replace("<%=context%>/index.jsp");
             </script>
+        </s:if>
     </head>
     <body>
-                
+        
         <!-- Aquí comienza el inicio empty-->   
         <div id="wrapper">
             <nav class="navbar navbar-default top-navbar" role="navigation">
@@ -84,19 +76,16 @@
                 </div>
 
             </nav>          
-            <!-- Aquí termina el inicio empty-->        
+            <!-- Aquí termina el inicio empty-->    
+
+
             <!-- /. NAV SIDE  -->
             <div id="page-wrapper" >
                 <div id="page-inner">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h1 class="page-header">
-                                Empty Page <small>Create new page.</small>
-                            </h1>
-                        </div>
-                    </div> 
-                    <!-- /. ROW  -->
-                    <footer><p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p></footer>
+                    
+                    <h2>Bienvenido al sistema de encuestas SIAEN</h2>
+                    <p>Registra y comparte todas las encuestas que necesites</p>
+                    
                 </div>
                 <!-- /. PAGE INNER  -->
             </div>
@@ -113,9 +102,15 @@
         <!-- Custom Js -->
         <script src="<%=context%>/assets/js/custom-scripts.js"></script>
 
-
+        <!-- DATA TABLE SCRIPTS -->
+        <script src="<%=context%>/assets/js/dataTables/jquery.dataTables.js"></script>
+        <script src="<%=context%>/assets/js/dataTables/dataTables.bootstrap.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+        </script>
     </body>
 </html>
-
 
 

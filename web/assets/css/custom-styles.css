@@ -430,3 +430,9 @@ font-size: 19px;
 }
 
 
+/*Agregado recientemente*/
+li.name {
+    color:  #fff !important;
+    font-weight:  bold !important;
+}
+

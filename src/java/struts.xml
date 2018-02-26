@@ -3,62 +3,22 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-    <include file="example.xml"/>
+    <include file="sistema.xml"/>
     <!-- Configuration for the default package. -->
-    <package name="default" extends="struts-default">
+    <package name="default" extends="struts-default, json-default">
         
         <!--ACCIONES REGISTRO-->
-        <action name="registrarEncuesta" class="model.controller.ControllerCreacion" method="registrarEncuesta">
-            <result name="success" type="chain">consultarEncuesta</result>
-            <result name="error">friendzone/error/error500.jsp</result>
+        <action name="loginUsuario" class="model.controller.ControllerSesion" method="iniciarSession">
+            <result name="success">vistas/administrador/creacion/vistaPrincipal.jsp</result>
+            <result name="error">index.jsp</result>
         </action>
         
-        <action name="consultarEncuestas" class="model.controller.ControllerCreacion" method="consultarEncuestas">
-            <result name="success">vistas/administrador/creacion/encuesta.jsp</result>
+        <action name="cerrarSesion" class="model.controller.ControllerSesion" method="cerrarSesion">
+            <result name="success">index.jsp</result>
         </action>
-        
-        <action name="consultarEncuesta" class="model.controller.ControllerCreacion" method="consultarEncuesta">
-            <result name="success">vistas/administrador/creacion/preguntasEncuesta.jsp</result>
-        </action>
-        
-        <action name="modificarEncuesta" class="model.controller.ControllerCreacion" method="modificarEncuesta">
-            <result name="success" type="chain">consultarEncuesta</result>
-            <result name="error" type="chain">consultarEncuesta</result>
-        </action>
-        
-        <action name="eliminarEncuesta" class="model.controller.ControllerCreacion" method="eliminarEncuesta">
-            <result name="success" type="chain">consultarEncuestas</result>
-            <result name="error" type="chain">consultarEncuestas</result>
-        </action>
-        
-        <action name="registrarPreguntaAbierta" class="model.controller.ControllerCreacion" method="registrarPreguntaAbierta">
-            <result name="success" type="chain">consultarEncuesta</result>
-            <result name="error" type="chain">consultarEncuesta</result>
-        </action>
-        
-        <action name="registrarPreguntaOpcion" class="model.controller.ControllerCreacion" method="registrarPreguntaOpcion">
-            <result name="success" type="chain">consultarEncuesta</result>
-            <result name="error" type="chain">consultarEncuesta</result>
-        </action>
-        
-        <action name="registrarPreguntaMultiple" class="model.controller.ControllerCreacion" method="registrarPreguntaMultiple">
-            <result name="success" type="chain">consultarEncuesta</result>
-            <result name="error" type="chain">consultarEncuesta</result>
-        </action>
-        
-        <action name="eliminarPregunta" class="model.controller.ControllerCreacion" method="eliminarPregunta">
-            <result name="success" type="chain">consultarEncuesta</result>
-            <result name="error" type="chain">consultarEncuesta</result>
-        </action>
-        
-        <action name="consultarPregunta" class="model.controller.ControllerCreacion" method="consultarPregunta">
-            <result name="success">vistas/administrador/creacion/detallePregunta.jsp</result>
-        </action>
-        
-        <action name="registrarOpcion" class="model.controller.ControllerCreacion" method="registrarOpcion">
-            <result name="success" type="chain">consultarPregunta</result>
-            <result name="error" type="chain">consultarPregunta</result>
-        </action>
+
+
         <!--TERMINAN ACCIONES DE REGISTRO-->
     </package>
 </struts>
+

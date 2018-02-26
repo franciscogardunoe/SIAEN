@@ -1,4 +1,4 @@
-<%-- 
+ <%-- 
     Document   : index
     Created on : 18/02/2018, 04:48:12 PM
     Author     : franc
@@ -22,7 +22,7 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="<%=context%>/assets/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="<%=context%>/assets/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="<%=context%>/assets/vendor/animate/animate.css"> 
 <!--===============================================================================================-->	
 	<link rel="stylesheet" type="text/css" href="<%=context%>/assets/vendor/css-hamburgers/hamburgers.min.css">
 <!--===============================================================================================-->
@@ -41,10 +41,10 @@
 
         <s:if test="#session.logged == 'yes'">
             <script>
-                window.location.replace("<%=context%>/miCuenta");
+                window.location.replace("<%=context%>/vistas/administrador/creacion/vistaPrincipal.jsp");
             </script>
         </s:if>  
-            
+
 </head>
 <body>
 	
@@ -56,7 +56,9 @@
 						Inicio de sesión
 					</span>
 				</div>
-                                <p class="login-box-msg"><strong><s:property value="mensaje"/></strong></p>
+                                <div id="loginAlert" class="alert <s:property value="logType"/>">
+                                    <center><s:property value="mensaje"/></center>
+                                </div>
 				<form name="login" action="loginUsuario" method="post" class="login100-form validate-form" >
 					<div class="wrap-input100 validate-input m-b-26" data-validate="Correo es requerido">
 						<span class="label-input100">Correo electrónico</span>

@@ -31,6 +31,7 @@ public class ControllerSesion extends ActionSupport implements SessionAware {
     private String message;
     //Mapa de la sesión
     private Map session;
+    private String logType;
 
     public String loginUsuario() {
         if (!session.containsKey("logged")) {
@@ -63,7 +64,34 @@ public class ControllerSesion extends ActionSupport implements SessionAware {
                 return ERROR;
             }
         }
-
+    }
+    
+    public String iniciarSession() {
+        try{
+            setUsuario(new DaoSesion().buscarUsuario(correo, password));
+            if (getUsuario().getIdUsuario() > 0) {
+                session.put("logged", "yes");
+                session.put("id", getUsuario().getIdUsuario());
+                session.put("name", getUsuario().getNombre());
+                session.put("apellido1", getUsuario().getApellido1());
+                session.put("apellido2", getUsuario().getApellido2());
+                session.put("mail", getUsuario().getCorreo());
+                session.put("password", getUsuario().getContrasena());
+                return SUCCESS;
+            } else {
+                mensaje = "Correo y/o contraseña incorrectos.";
+                logType = "alert-danger";
+                return ERROR;
+            }
+        }catch (NullPointerException e) {
+            mensaje = "Correo y/o contraseña incorrectos.";
+            logType = "alert-danger";
+            return ERROR;
+        }
+    }
+    
+    public String vistaPrincipal() {
+        return SUCCESS;
     }
     
         public String cerrarSesion() {
@@ -71,6 +99,7 @@ public class ControllerSesion extends ActionSupport implements SessionAware {
         session.clear();
         return SUCCESS;
     }
+        
         
     
     /*
@@ -123,6 +152,14 @@ public class ControllerSesion extends ActionSupport implements SessionAware {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getLogType() {
+        return logType;
+    }
+
+    public void setLogType(String logType) {
+        this.logType = logType;
     }
     
     
