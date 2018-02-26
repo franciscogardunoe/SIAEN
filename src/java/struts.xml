@@ -25,6 +25,35 @@
             <result name="success" type="chain">consultarEncuesta</result>
             <result name="error" type="chain">consultarEncuesta</result>
         </action>
+        
+        <action name="eliminarEncuesta" class="model.controller.ControllerCreacion" method="eliminarEncuesta">
+            <result name="success" type="chain">consultarEncuestas</result>
+            <result name="error" type="chain">consultarEncuestas</result>
+        </action>
+        
+        <action name="registrarPreguntaAbierta" class="model.controller.ControllerCreacion" method="registrarPreguntaAbierta">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error" type="chain">consultarEncuesta</result>
+        </action>
+        
+        <action name="registrarPreguntaOpcion" class="model.controller.ControllerCreacion" method="registrarPreguntaOpcion">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error" type="chain">consultarEncuesta</result>
+        </action>
+        
+        <action name="registrarPreguntaMultiple" class="model.controller.ControllerCreacion" method="registrarPreguntaMultiple">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error" type="chain">consultarEncuesta</result>
+        </action>
+        
+        <action name="eliminarPregunta" class="model.controller.ControllerCreacion" method="eliminarPregunta">
+            <result name="success" type="chain">consultarEncuesta</result>
+            <result name="error" type="chain">consultarEncuesta</result>
+        </action>
+        
+        <action name="consultarPregunta" class="model.controller.ControllerCreacion" method="consultarPregunta">
+            <result name="success">vistas/administrador/creacion/detallePregunta.jsp</result>
+        </action>
         <!--TERMINAN ACCIONES DE REGISTRO-->
     </package>
 </struts>

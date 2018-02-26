@@ -12,7 +12,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Encuestas</title>
+        <title>Free Bootstrap Admin Template : Dream</title>
         <!-- Bootstrap Styles-->
         <link href="<%=context%>/assets/css/bootstrap.css" rel="stylesheet" />
         <!-- FontAwesome Styles-->
@@ -21,13 +21,9 @@
         <link href="<%=context%>/assets/css/custom-styles.css" rel="stylesheet" />
         <!-- Google Fonts-->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-        <!--Libreria de JQuery-->
-        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-
         <!-- Librerias de SweetAlert-->
         <script src="<%=context%>/sweetalert-master/dist/sweetalert.min.js"></script>
         <link rel="stylesheet" type="text/css" href="<%=context%>/sweetalert-master/dist/sweetalert.css">
-            <!--Terminan librerías de SweerAlert-->
             <!--Terminan librerías de SweerAlert-->
             <script>
                 $(document).ready(function ()
@@ -52,7 +48,8 @@
                     <a class="navbar-brand" href="index.jsp">Dream</a>
                 </div>
 
-                <ul class="nav navbar-top-links navbar-right">
+                <ul class="nav navbar-top-links navbar-right">                                   
+                    <!-- /.dropdown -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
                             <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -138,98 +135,100 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h1 class="page-header">
-                                Encuestas <small></small>
-                                <button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#exampleModal">
-                                    <i class="fa fa-plus"></i>&nbsp;Nueva Encuesta
-                                </button>
+                                Pregunta <small>Detalles</small>
                             </h1>
                         </div>
                     </div> 
-                    <div class="row">                 
+
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <br>
+                                            <div class="col-md-12">    
+                                                <!-- Advanced Tables -->
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading">
+                                                        Detalles Pregunta
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="table-responsive">
+                                                            <label>Pregunta:</label> <s:property value="unaPregunta.pregunta"/><br></br>
+                                                            <label>Obligatoria:</label>
+                                                            <s:set name="obli" value="obligatoria"/>
+                                                            <s:if test="%{#obli==1}">
+                                                                Si
+                                                            </s:if>
+                                                            <s:else>
+                                                                No
+                                                            </s:else> <br></br>
+                                                            <label>Tipo:</label> <s:property value="unaPregunta.tipo.tipo"/><br></br>                                     
+                                                            <button class="btn btn-warning btn pull-right" data-toggle="modal" data-target="#editarEncuesta">
+                                                                <i class="fa fa-pencil"></i>&nbsp; Modificar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-md-12">    
                             <!-- Advanced Tables -->
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Mis Encuestas
+                                    Preguntas
                                 </div>
                                 <div class="panel-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Código</th>
-                                                    <th>Nombre Encuesta</th>
-                                                    <th>Fecha Creación</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <s:iterator value="misEncuestas" status="stet"> 
-                                                    <tr>
-                                                        <td><s:property value="%{#stet.count}"/></td>
-                                                        <td><s:property value="codigo"/></td>
-                                                        <td><s:property value="nombre"/></td>
-                                                        <td><s:property value="fechaCreacion"/></td>
-                                                        <div class="container">                                                          
-                                                            <form role="form" name="consultar" action="<%=context%>/consultarEncuesta" method="POST">
-                                                                <input id="codigo" name="codigo" value="<s:property value="codigo"/>" hidden=""/>
-                                                                <td><button type="submit" class="btn btn-primary" title="Ver detalles"><i class="fa fa-eye"></i></button></td>
-                                                            </form>
-                                                            <form role="form" id="eliminar" name="eliminar" action="<%=context%>/eliminarEncuesta" method="POST">
-                                                                <input id="idEncuesta" name="unaEncuesta.idEncuesta" value="<s:property value="idEncuesta"/>" hidden=""/>
-                                                                <td><button type="submit" class="btn btn-danger" title="Eliminar Encuesta"><i class="fa fa-times"></i></button></td>
-                                                            </form>
-                                                        </div> 
-                                                    </tr>
-                                                </s:iterator> 
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <button type="button" class="btn btn-primary btn pull-right" data-toggle="modal" data-target="#exampleModal">
+                                        <i class="fa fa-plus"></i>&nbsp;Nueva Opción
+                                    </button><br></br><br>
+                                        <div class="table-responsive">
+                                            <s:set name="numero" value="numeroOpciones"/>
+                                            <s:if test="%{#numero>0}">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Opcion</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <s:iterator value="misOpciones" status="stet"> 
+                                                            <tr>
+                                                                <td><s:property value="%{#stet.count}"/></td>
+                                                                <td><s:property value="opcion"/></td>
+                                                            </tr>
+                                                        </s:iterator> 
+                                                    </tbody>
+                                                </table>
+                                            </s:if>
+                                            <s:else>
+                                                <div class="alert alert-warning">
+                                                    <strong>¡Advertencia!</strong> Aún no hay opciones registradas.
+                                                </div>
+                                            </s:else> 
+                                        </div>
                                 </div>
                             </div>
                             <!--End Advanced Tables -->
                         </div>
                     </div>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">NUEVA ENCUESTA</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <form role="form" name="registrar" action="<%=context%>/registrarEncuesta" method="post">
-                                    <div class="modal-body">
 
-                                        <div class="form-group">
-                                            <label>Nombre Encuesta</label>
-                                            <input type="text" class="form-control" name="unaEncuesta.nombre" id="nombre" placeholder="Nombre" required="" min="2" max="45">                                       
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Descripción</label>
-                                            <textarea type=text" class="form-control" rows="3" name="unaEncuesta.descripcion" id="descripcion" placeholder="Descripción" max="150"></textarea>
-                                        </div>          
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                        <button type="submit" class="btn btn-primary">Registrar</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+
+
+                    <!-- /. ROW  -->
+                    <footer><p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p></footer>
                 </div>
-
-                <footer><p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p></footer>
+                <!-- /. PAGE INNER  -->
             </div>
-            <!-- /. PAGE INNER  -->
-        </div>
-        <!-- /. PAGE WRAPPER  -->
+            <!-- /. PAGE WRAPPER  -->
         </div>
         <!-- /. WRAPPER  -->
         <!-- JS Scripts-->
@@ -242,14 +241,7 @@
         <!-- Custom Js -->
         <script src="<%=context%>/assets/js/custom-scripts.js"></script>
 
-        <!-- DATA TABLE SCRIPTS -->
-        <script src="<%=context%>/assets/js/dataTables/jquery.dataTables.js"></script>
-        <script src="<%=context%>/assets/js/dataTables/dataTables.bootstrap.js"></script>
-        <script>
-                $(document).ready(function () {
-                    $('#dataTables-example').dataTable();
-                });
-        </script>
+
     </body>
 </html>
 

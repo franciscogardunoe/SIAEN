@@ -11,7 +11,7 @@
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1.0" />
-        <title>Detalle Encuesta</title>
+        <title>Encuesta | Detalle</title>
         <!-- Bootstrap Styles-->
         <link href="<%=context%>/assets/css/bootstrap.css" rel="stylesheet" />
         <!-- FontAwesome Styles-->
@@ -136,7 +136,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h1 class="page-header">
-                                Detalles <small> Encuesta</small>
+                                Encuesta <small> Detalle</small>
                             </h1>
                         </div>
                     </div> 
@@ -230,149 +230,254 @@
                                                                 <td><s:property value="pregunta"/></td>
                                                                 <td>
                                                                     <s:set name="obli" value="obligatoria"/>
-                                                                    <s:if test="%{#obligatoria==1}">
-                                                                        Si
+                                                                    <s:if test="%{#obli==1}">
+                                                                        <i class="glyphicon glyphicon-ok"></i>
                                                                     </s:if>
                                                                     <s:else>
-                                                                        No
+                                                                        <i class="glyphicon glyphicon-remove"></i>
                                                                     </s:else> 
                                                                 </td>
                                                                 <td><s:property value="tipo.tipo"/></td>
-                                                            </tr>
-                                                        </s:iterator> 
-                                                    </tbody>
-                                                </table>
-                                            </s:if>
-                                            <s:else>
-                                                <div class="alert alert-warning">
-                                                    <strong>¡Advertencia!</strong> Aún no hay preguntas registradas.
-                                                </div>
-                                            </s:else> 
-                                        </div>
-                                </div>
-                            </div>
-                            <!--End Advanced Tables -->
-                        </div>
-                    </div>
-                </div>
+                                                                <div class="container">                                                          
+                                                                    <form role="form" name="consultar" action="<%=context%>/consultarPregunta" method="POST">
+                                                                        <input id="idPregunta" name="unaPregunta.idPregunta" value="<s:property value="idPregunta"/>" hidden=""/>
+                                                                        <input id="codigo" name="codigo" value="<s:property value="codigo"/>" hidden=""/>
+                                                                        <td><button type="submit" class="btn btn-primary" title="Ver detalles"><i class="fa fa-eye"></i></button></td>
+                                                                    </form>
+                                                                    <form role="form" id="eliminar" name="eliminar" action="<%=context%>/eliminarPregunta" method="POST">
+                                                                        <input id="idPregunta" name="unaPregunta.idPregunta" value="<s:property value="idPregunta"/>" hidden=""/>
+                                                                        <input type="text" id="idEncuesta" name="unaEncuesta.idEncuesta" value="<s:property value="unaEncuesta.idEncuesta"/>" hidden="">
+                                                                            <input type="text" id="codigo" name="codigo" value="<s:property value="unaEncuesta.codigo"/>" hidden="">
+                                                                                <td><button type="submit" class="btn btn-danger" title="Eliminar Pregunta"><i class="fa fa-times"></i></button></td>
+                                                                                </form>
+                                                                                </div> 
+                                                                                </tr>
+                                                                            </s:iterator> 
+                                                                            </tbody>
+                                                                            </table>
+                                                                        </s:if>
+                                                                        <s:else>
+                                                                            <div class="alert alert-warning">
+                                                                                <strong>¡Advertencia!</strong> Aún no hay preguntas registradas.
+                                                                            </div>
+                                                                        </s:else> 
+                                                                        </div>
+                                                                        </div>
+                                                                        </div>
+                                                                        <!--End Advanced Tables -->
+                                                                        </div>
+                                                                        </div>
+                                                                        </div>
 
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">NUEVA PREGUNTA</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <div class="col-md-12">
-                                <br></br>
-                                <div class="alert alert-info">
-                                    <strong>¡Aviso!</strong> Seleccione el tipo de pregunta que desea registrar.
-                                </div>
-                                <!-- Nav tabs -->
-                                <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Abierta</a></li>
-                                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Opción múltiple</a></li>
-                                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Selección múltiple</a></li>
-                                </ul>
-
-                                <!-- Tab panes -->
-                                <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="home">
-                                        <form role="form" name="registrar" action="<%=context%>/modificarEncuesta" method="post">
-                                            <div class="modal-body">
-                                                <input type="text" id="idEncuesta" name="unaEncuesta.idEncuesta" value="<s:property value="unaEncuesta.idEncuesta"/>" hidden="">
-                                                    <input type="text" id="codigo" name="codigo" value="<s:property value="unaEncuesta.codigo"/>" hidden="">
-                                                        <div class="form-group">
-                                                            <label>Pregunta</label>
-                                                            <textarea type=text" class="form-control" rows="3" name="unaPregunta.pregunta" id="pregunta" placeholder="Descripción" max="150"></textarea>
-                                                        </div> 
-                                                        <div class="form-group">
-                                                            <label>Pregunta obligatoria</label>
-                                                            <br></br>
-                                                            <label class="radio-inline">
-                                                                <input type="radio" name="unaPregunta.bligatoria" id="esObligatoria" value="1"> Si
-                                                            </label>
-                                                            <label class="radio-inline">
-                                                                <input type="radio" name="unaPregunta.esObligatoria" id="esObligatoria" value="0"> No
-                                                            </label>        
-                                                        </div>
-                                                        </div>
-                                                        <center><button type="submit" class="btn btn-primary">Aceptar</button></center>
-
-                                                        </form>
-                                                        </div>
-                                                        <div role="tabpanel" class="tab-pane" id="profile">
-
-                                                        </div>
-                                                        <div role="tabpanel" class="tab-pane" id="messages">...</div>
-                                                        </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                        </div>
-
-                                                        </div>
-                                                        </div>
-                                                        </div>
-
-                                                        <!-- Modal -->
-                                                        <div class="modal fade" id="editarEncuesta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR ENCUESTA</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <form role="form" name="registrar" action="<%=context%>/modificarEncuesta" method="post">
-                                                                        <div class="modal-body">
-                                                                            <input type="text" id="idEncuesta" name="unaEncuesta.idEncuesta" value="<s:property value="unaEncuesta.idEncuesta"/>" hidden="">
-                                                                                <input type="text" id="codigo" name="codigo" value="<s:property value="unaEncuesta.codigo"/>" hidden="">
-                                                                                    <div class="form-group">
-                                                                                        <label>Nombre Encuesta</label>
-                                                                                        <input type="text" class="form-control" name="unaEncuesta.nombre" id="nombre" placeholder="Nombre" required="" min="2" max="45" value="<s:property value="unaEncuesta.nombre"/>">                                       
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <label>Descripción</label>
-                                                                                        <input type="text" class="form-control" rows="3" name="unaEncuesta.descripcion" id="descripcion" placeholder="Descripción" max="150" value="<s:property value="unaEncuesta.descripcion"/>"></textarea>
-                                                                                    </div>          
-                                                                                    </div>
-                                                                                    <div class="modal-footer">
-                                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                        <button type="submit" class="btn btn-primary">Aceptar</button>
-                                                                                    </div>
-                                                                                    </form>
-                                                                                    </div>
-                                                                                    </div>
+                                                                        <!-- Modal -->
+                                                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                            <div class="modal-dialog" role="document">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <h5 class="modal-title" id="exampleModalLabel">NUEVA PREGUNTA</h5>
+                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                        </button>
                                                                                     </div>
 
+                                                                                    <div class="col-md-12">
+                                                                                        <br></br>
+                                                                                        <div class="alert alert-info">
+                                                                                            <strong>¡Aviso!</strong> Seleccione el tipo de pregunta que desea registrar.
+                                                                                        </div>
+                                                                                        <!-- Nav tabs -->
+                                                                                        <ul class="nav nav-tabs" role="tablist">
+                                                                                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Abierta</a></li>
+                                                                                            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Opción múltiple</a></li>
+                                                                                            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Selección múltiple</a></li>
+                                                                                        </ul>
 
-                                                                                    <footer><p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p></footer>
-                                                                                    </div>
-                                                                                    <!-- /. PAGE INNER  -->
-                                                                                    </div>
-                                                                                    <!-- /. PAGE WRAPPER  -->
-                                                                                    </div>
-                                                                                    <!-- /. WRAPPER  -->
-                                                                                    <!-- JS Scripts-->
-                                                                                    <!-- jQuery Js -->
-                                                                                    <script src="<%=context%>/assets/js/jquery-1.10.2.js"></script>
-                                                                                    <!-- Bootstrap Js -->
-                                                                                    <script src="<%=context%>/assets/js/bootstrap.min.js"></script>
-                                                                                    <!-- Metis Menu Js -->
-                                                                                    <script src="<%=context%>/assets/js/jquery.metisMenu.js"></script>
-                                                                                    <!-- Custom Js -->
-                                                                                    <script src="<%=context%>/assets/js/custom-scripts.js"></script>
+                                                                                        <!-- Tab panes -->
+                                                                                        <div class="tab-content">
+                                                                                            <div role="tabpanel" class="tab-pane active" id="home">
+                                                                                                <form role="form" name="registrar" action="<%=context%>/registrarPreguntaAbierta" method="post">
+                                                                                                    <div class="modal-body">
+                                                                                                        <input type="text" id="idEncuesta" name="unaEncuesta.idEncuesta" value="<s:property value="unaEncuesta.idEncuesta"/>" hidden="">
+                                                                                                            <input type="text" id="codigo" name="codigo" value="<s:property value="unaEncuesta.codigo"/>" hidden="">
+                                                                                                                <div class="form-group">
+                                                                                                                    <label>Pregunta</label>
+                                                                                                                    <textarea type=text" class="form-control" rows="3" name="unaPregunta.pregunta" id="pregunta" placeholder="Pregunta" max="150"></textarea>
+                                                                                                                </div> 
+                                                                                                                <div class="form-group">
+                                                                                                                    <label>Pregunta obligatoria</label>
+                                                                                                                    <br></br>
+                                                                                                                    <label class="radio-inline">
+                                                                                                                        <input type="radio" name="unaPregunta.obligatoria" id="obligatoria" value="1"> Si
+                                                                                                                    </label>
+                                                                                                                    <label class="radio-inline">
+                                                                                                                        <input type="radio" name="unaPregunta.obligatoria" id="obligatoria" value="0"> No
+                                                                                                                    </label>        
+                                                                                                                </div>
+                                                                                                                </div>
+                                                                                                                <center><button type="submit" class="btn btn-primary">Aceptar</button></center>
+                                                                                                                </form>
+                                                                                                                </div>
 
-                                                                                    <!-- DATA TABLE SCRIPTS -->
-                                                                                    <script src="<%=context%>/assets/js/dataTables/jquery.dataTables.js"></script>
-                                                                                    <script src="<%=context%>/assets/js/dataTables/dataTables.bootstrap.js"></script>                                                                      
-                                                                                    </body>
-                                                                                    </html>
+
+
+
+                                                                                                                <div role="tabpanel" class="tab-pane" id="profile">
+                                                                                                                    <form role="form" name="registrar" action="<%=context%>/registrarPreguntaOpcion" method="post">
+                                                                                                                        <div class="modal-body">
+                                                                                                                            <input type="text" id="idEncuesta" name="unaEncuesta.idEncuesta" value="<s:property value="unaEncuesta.idEncuesta"/>" hidden="">
+                                                                                                                                <input type="text" id="codigo" name="codigo" value="<s:property value="unaEncuesta.codigo"/>" hidden="">
+                                                                                                                                    <div class="form-group">
+                                                                                                                                        <label>Pregunta</label>
+                                                                                                                                        <textarea type=text" class="form-control" rows="3" name="unaPregunta.pregunta" id="pregunta" placeholder="Pregunta" max="150" required=""></textarea>
+                                                                                                                                    </div> 
+
+                                                                                                                                    <div class="form-group">
+                                                                                                                                        <label>Opción 1</label>
+                                                                                                                                        <input type=text" class="form-control" rows="3" name="opcion1" id="opcion1" placeholder="Opción 1" max="100"/>
+                                                                                                                                    </div> 
+                                                                                                                                    <div class="form-group">
+                                                                                                                                        <label>Opción 2</label>
+                                                                                                                                        <input type=text" class="form-control" rows="3" name="opcion2" id="opcion2" placeholder="Opción 2" max="100"/>
+                                                                                                                                    </div> 
+                                                                                                                                    <div class="form-group">
+                                                                                                                                        <label>Opción 3</label>
+                                                                                                                                        <input type=text" class="form-control" rows="3" name="opcion3" id="opcion3" placeholder="Opción 3" max="100"/>
+                                                                                                                                    </div> 
+                                                                                                                                    <div class="form-group">
+                                                                                                                                        <label>Opción 4</label>
+                                                                                                                                        <input type=text" class="form-control" rows="3" name="opcion4" id="opcion4" placeholder="Opción 4" max="100"/>
+                                                                                                                                    </div> 
+                                                                                                                                    <div class="form-group">
+                                                                                                                                        <label>Opción 5</label>
+                                                                                                                                        <input type=text" class="form-control" rows="3" name="opcion5" id="opcion5" placeholder="Opción 5" max="100"/>
+                                                                                                                                    </div> 
+                                                                                                                                    <div class="form-group">
+                                                                                                                                        <label>Pregunta obligatoria</label>
+                                                                                                                                        <br></br>
+                                                                                                                                        <label class="radio-inline">
+                                                                                                                                            <input type="radio" name="unaPregunta.obligatoria" id="obligatoria" value="1"> Si
+                                                                                                                                        </label>
+                                                                                                                                        <label class="radio-inline">
+                                                                                                                                            <input type="radio" name="unaPregunta.obligatoria" id="obligatoria" value="0"> No
+                                                                                                                                        </label>        
+                                                                                                                                    </div>
+                                                                                                                                    </div>
+                                                                                                                                    <center><button type="submit" class="btn btn-primary">Aceptar</button></center>
+                                                                                                                                    </form>
+                                                                                                                                    </div>
+
+
+
+
+                                                                                                                                    <div role="tabpanel" class="tab-pane" id="messages">
+                                                                                                                                        <form role="form" name="registrar" action="<%=context%>/registrarPreguntaMultiple" method="post">
+                                                                                                                                            <div class="modal-body">
+                                                                                                                                                <input type="text" id="idEncuesta" name="unaEncuesta.idEncuesta" value="<s:property value="unaEncuesta.idEncuesta"/>" hidden="">
+                                                                                                                                                    <input type="text" id="codigo" name="codigo" value="<s:property value="unaEncuesta.codigo"/>" hidden="">
+                                                                                                                                                        <div class="form-group">
+                                                                                                                                                            <label>Pregunta</label>
+                                                                                                                                                            <textarea type=text" class="form-control" rows="3" name="unaPregunta.pregunta" id="pregunta" placeholder="Pregunta" max="150" required=""></textarea>
+                                                                                                                                                        </div> 
+
+                                                                                                                                                        <div class="form-group">
+                                                                                                                                                            <label>Opción 1</label>
+                                                                                                                                                            <input type=text" class="form-control" rows="3" name="opcion1" id="opcion1" placeholder="Opción 1" max="100"/>
+                                                                                                                                                        </div> 
+                                                                                                                                                        <div class="form-group">
+                                                                                                                                                            <label>Opción 2</label>
+                                                                                                                                                            <input type=text" class="form-control" rows="3" name="opcion2" id="opcion2" placeholder="Opción 2" max="100"/>
+                                                                                                                                                        </div> 
+                                                                                                                                                        <div class="form-group">
+                                                                                                                                                            <label>Opción 3</label>
+                                                                                                                                                            <input type=text" class="form-control" rows="3" name="opcion3" id="opcion3" placeholder="Opción 3" max="100"/>
+                                                                                                                                                        </div> 
+                                                                                                                                                        <div class="form-group">
+                                                                                                                                                            <label>Opción 4</label>
+                                                                                                                                                            <input type=text" class="form-control" rows="3" name="opcion4" id="opcion4" placeholder="Opción 4" max="100"/>
+                                                                                                                                                        </div> 
+                                                                                                                                                        <div class="form-group">
+                                                                                                                                                            <label>Opción 5</label>
+                                                                                                                                                            <input type=text" class="form-control" rows="3" name="opcion5" id="opcion5" placeholder="Opción 5" max="100"/>
+                                                                                                                                                        </div> 
+                                                                                                                                                        <div class="form-group">
+                                                                                                                                                            <label>Pregunta obligatoria</label>
+                                                                                                                                                            <br></br>
+                                                                                                                                                            <label class="radio-inline">
+                                                                                                                                                                <input type="radio" name="unaPregunta.obligatoria" id="obligatoria" value="1"> Si
+                                                                                                                                                            </label>
+                                                                                                                                                            <label class="radio-inline">
+                                                                                                                                                                <input type="radio" name="unaPregunta.obligatoria" id="obligatoria" value="0"> No
+                                                                                                                                                            </label>        
+                                                                                                                                                        </div>
+                                                                                                                                                        </div>
+                                                                                                                                                        <center><button type="submit" class="btn btn-primary">Aceptar</button></center>
+                                                                                                                                                        </form>
+                                                                                                                                                        </div>
+
+                                                                                                                                                        </div>
+                                                                                                                                                        </div>
+                                                                                                                                                        <div class="modal-footer">
+                                                                                                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                                                                                        </div>
+
+                                                                                                                                                        </div>
+                                                                                                                                                        </div>
+                                                                                                                                                        </div>
+
+                                                                                                                                                        <!-- Modal -->
+                                                                                                                                                        <div class="modal fade" id="editarEncuesta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                                                                                            <div class="modal-dialog" role="document">
+                                                                                                                                                                <div class="modal-content">
+                                                                                                                                                                    <div class="modal-header">
+                                                                                                                                                                        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR ENCUESTA</h5>
+                                                                                                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                                                                                                        </button>
+                                                                                                                                                                    </div>
+                                                                                                                                                                    <form role="form" name="registrar" action="<%=context%>/modificarEncuesta" method="post">
+                                                                                                                                                                        <div class="modal-body">
+                                                                                                                                                                            <input type="text" id="idEncuesta" name="unaEncuesta.idEncuesta" value="<s:property value="unaEncuesta.idEncuesta"/>" hidden="">
+                                                                                                                                                                                <input type="text" id="codigo" name="codigo" value="<s:property value="unaEncuesta.codigo"/>" hidden="">
+                                                                                                                                                                                    <div class="form-group">
+                                                                                                                                                                                        <label>Nombre Encuesta</label>
+                                                                                                                                                                                        <input type="text" class="form-control" name="unaEncuesta.nombre" id="nombre" placeholder="Nombre" required="" min="2" max="45" value="<s:property value="unaEncuesta.nombre"/>">                                       
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    <div class="form-group">
+                                                                                                                                                                                        <label>Descripción</label>
+                                                                                                                                                                                        <input type="text" class="form-control" rows="3" name="unaEncuesta.descripcion" id="descripcion" placeholder="Descripción" max="150" value="<s:property value="unaEncuesta.descripcion"/>"></textarea>
+                                                                                                                                                                                    </div>          
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    <div class="modal-footer">
+                                                                                                                                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                                                                                                                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    </form>
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    </div>
+
+
+                                                                                                                                                                                    <footer><p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p></footer>
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    <!-- /. PAGE INNER  -->
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    <!-- /. PAGE WRAPPER  -->
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    <!-- /. WRAPPER  -->
+                                                                                                                                                                                    <!-- JS Scripts-->
+                                                                                                                                                                                    <!-- jQuery Js -->
+                                                                                                                                                                                    <script src="<%=context%>/assets/js/jquery-1.10.2.js"></script>
+                                                                                                                                                                                    <!-- Bootstrap Js -->
+                                                                                                                                                                                    <script src="<%=context%>/assets/js/bootstrap.min.js"></script>
+                                                                                                                                                                                    <!-- Metis Menu Js -->
+                                                                                                                                                                                    <script src="<%=context%>/assets/js/jquery.metisMenu.js"></script>
+                                                                                                                                                                                    <!-- Custom Js -->
+                                                                                                                                                                                    <script src="<%=context%>/assets/js/custom-scripts.js"></script>
+
+                                                                                                                                                                                    <!-- DATA TABLE SCRIPTS -->
+                                                                                                                                                                                    <script src="<%=context%>/assets/js/dataTables/jquery.dataTables.js"></script>
+                                                                                                                                                                                    <script src="<%=context%>/assets/js/dataTables/dataTables.bootstrap.js"></script>                                                                      
+                                                                                                                                                                                    </body>
+                                                                                                                                                                                    </html>
 
 

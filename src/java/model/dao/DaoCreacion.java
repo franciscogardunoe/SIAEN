@@ -5,6 +5,7 @@
  */
 package model.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ import model.bean.BeanEncuesta;
 import model.bean.BeanPregunta;
 import model.bean.BeanTipo;
 import model.bean.BeanUsuario;
+import model.bean.BeanOpcion;
 import utilerias.ConexionSQL;
 
 /**
@@ -26,6 +28,7 @@ public class DaoCreacion {
     Connection conexion;
     PreparedStatement pstm;
     ResultSet rs;
+    CallableStatement cs;
 
     public boolean registrarEncuesta(BeanEncuesta unaEncuesta) {
         boolean resultado = false;
@@ -226,6 +229,202 @@ public class DaoCreacion {
             }
         }
         return resultado;
+    }
+
+    public boolean eliminarEncuesta(int idEncuesta) {
+        boolean resultado = false;
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_eliminarEncuesta ?");
+            pstm.setInt(1, idEncuesta);
+            resultado = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            System.err.println("Excepción SQL: " + ex.getMessage());
+            return true;
+        } catch (Exception e) {
+            System.err.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception exc) {
+                System.err.println("Excepción: " + exc.getMessage());
+            }
+        }
+        return resultado;
+    }
+
+    public int registrarPreguntaOpcion(BeanPregunta unaPregunta) {
+        boolean resultado = false;
+        int idPregunta = 0;
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            cs = conexion.prepareCall("{ CALL pa_registrarPreguntaOpcion (?,?,?,?,?) }");
+            cs.setString(1, unaPregunta.getPregunta());
+            cs.setInt(2, unaPregunta.getObligatoria());
+            cs.setInt(3, unaPregunta.getTipo().getIdTipo());
+            cs.setInt(4, unaPregunta.getEncuesta().getIdEncuesta());
+            cs.registerOutParameter(5, java.sql.Types.INTEGER);
+            resultado = cs.execute();
+            idPregunta = cs.getInt("idPregunta");
+
+        } catch (SQLException ex) {
+            System.err.println("Excepción SQL: " + ex.getMessage());
+            return idPregunta;
+        } catch (Exception e) {
+            System.err.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception exc) {
+                System.err.println("Excepción: " + exc.getMessage());
+            }
+        }
+        return idPregunta;
+    }
+
+    public boolean registrarOpcion(BeanOpcion opcion) {
+        boolean resultado = false;
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_registrarOpcion ?,?,?");
+            pstm.setString(1, opcion.getOpcion());
+            pstm.setInt(2, opcion.getEsAbierta());
+            pstm.setInt(3, opcion.getPregunta().getIdPregunta());
+            resultado = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            System.err.println("Excepción SQL: " + ex.getMessage());
+            return true;
+        } catch (Exception e) {
+            System.err.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception exc) {
+                System.err.println("Excepción: " + exc.getMessage());
+            }
+        }
+        return resultado;
+    }
+    
+     public boolean eliminarPregunta(int idPregunta) {
+        boolean resultado = false;
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_eliminarPregunta ?");
+            pstm.setInt(1, idPregunta);
+            resultado = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            System.err.println("Excepción SQL: " + ex.getMessage());
+            return true;
+        } catch (Exception e) {
+            System.err.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception exc) {
+                System.err.println("Excepción: " + exc.getMessage());
+            }
+        }
+        return resultado;
+    }
+     
+     public List<BeanOpcion> cosultarOpciones(int idPregunta) {
+        List<BeanOpcion> lista = new ArrayList<>();
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_consultarOpcionesPregunta ?");
+            pstm.setInt(1, idPregunta);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                BeanOpcion unaOpcion=new BeanOpcion();
+                unaOpcion.setIdOpcion(rs.getInt("idOpcion"));
+                unaOpcion.setOpcion(rs.getString("opcion"));             
+                BeanPregunta unaPregunta = new BeanPregunta();
+                unaPregunta.setIdPregunta(rs.getInt("idPregunta"));
+                unaPregunta.setPregunta(rs.getString("pregunta"));
+                unaPregunta.setObligatoria(rs.getInt("obligatoria"));
+                BeanTipo unTipo = new BeanTipo();
+                unTipo.setIdTipo(rs.getInt("idTipo"));
+                unTipo.setTipo(rs.getString("tipo"));
+                unaPregunta.setTipo(unTipo);
+                unaOpcion.setPregunta(unaPregunta);
+                lista.add(unaOpcion);
+            }
+        } catch (SQLException esql) {
+            System.out.println("Excepción SQL: " + esql.getMessage());
+        } catch (Exception e) {
+            System.out.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Excepción: " + ex.getMessage());
+            }
+        }
+        return lista;
+    }
+     
+        public BeanPregunta consultarPregunta(int idPregunta) {
+        BeanPregunta unaPregunta = new BeanPregunta();
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("pa_consultarPregunta ?");
+            pstm.setInt(1, idPregunta);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                unaPregunta.setIdPregunta(rs.getInt("idPregunta"));
+                unaPregunta.setPregunta(rs.getString("pregunta"));
+                unaPregunta.setObligatoria(rs.getInt("obligatoria"));
+                BeanTipo unTipo=new BeanTipo();
+                unTipo.setTipo(rs.getString("tipo"));
+                unaPregunta.setTipo(unTipo);
+                BeanEncuesta unaEncuesta=new BeanEncuesta(); 
+                unaEncuesta.setNombre(rs.getString("nombre"));
+                unaEncuesta.setDescripcion(rs.getString("descripcion"));
+                unaPregunta.setEncuesta(unaEncuesta);      
+            }
+        } catch (SQLException esql) {
+            System.out.println("Excepción SQL: " + esql.getMessage());
+        } catch (Exception e) {
+            System.out.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Excepción: " + ex.getMessage());
+            }
+        }
+        return unaPregunta;
     }
 
 }
