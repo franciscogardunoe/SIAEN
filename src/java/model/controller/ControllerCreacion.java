@@ -7,8 +7,11 @@ package model.controller;
 
 import static com.opensymphony.xwork2.Action.ERROR;
 import static com.opensymphony.xwork2.Action.SUCCESS;
+import com.opensymphony.xwork2.ActionContext;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import model.bean.BeanAplica;
 import model.bean.BeanEncuesta;
 import model.bean.BeanPregunta;
 import model.bean.BeanTipo;
@@ -24,19 +27,23 @@ public class ControllerCreacion {
 
     private BeanEncuesta unaEncuesta;
     private BeanPregunta unaPregunta;
+    private BeanAplica unaAplica;
     private List<BeanEncuesta> misEncuestas;
     private List<BeanPregunta> misPreguntas;
     private List<BeanOpcion> misOpciones;
+    private List<BeanAplica> misEncuestasUsuario;
     private String codigo;
     private int numeroPreguntas;
     private int numeroEncuestas;
     private int numeroOpciones;
+    private Map session;
 
     private String accion;
     private String mensaje;
     private String tipoMensaje;
-    
+
     private int totalAplicadas;
+    private int idAplica;
 
     String opcion1;
     float valor1;
@@ -48,6 +55,8 @@ public class ControllerCreacion {
     float valor4;
     String opcion5;
     float valor5;
+
+    int opcion;
 
     public ControllerCreacion() {
     }
@@ -236,6 +245,46 @@ public class ControllerCreacion {
         this.totalAplicadas = totalAplicadas;
     }
 
+    public List<BeanAplica> getMisEncuestasUsuario() {
+        return misEncuestasUsuario;
+    }
+
+    public void setMisEncuestasUsuario(List<BeanAplica> misEncuestasUsuario) {
+        this.misEncuestasUsuario = misEncuestasUsuario;
+    }
+
+    public Map getSession() {
+        return session;
+    }
+
+    public void setSession(Map session) {
+        this.session = session;
+    }
+
+    public BeanAplica getUnaAplica() {
+        return unaAplica;
+    }
+
+    public void setUnaAplica(BeanAplica unaAplica) {
+        this.unaAplica = unaAplica;
+    }
+
+    public int getOpcion() {
+        return opcion;
+    }
+
+    public void setOpcion(int opcion) {
+        this.opcion = opcion;
+    }
+
+    public int getIdAplica() {
+        return idAplica;
+    }
+
+    public void setIdAplica(int idAplica) {
+        this.idAplica = idAplica;
+    }
+
     public String registrarEncuesta() {
         DaoCreacion daoC = new DaoCreacion();
         BeanEncuesta beanE = new BeanEncuesta();
@@ -245,7 +294,9 @@ public class ControllerCreacion {
         beanE.setNombre(getUnaEncuesta().getNombre());
         beanE.setDescripcion(getUnaEncuesta().getDescripcion());
         BeanUsuario beanU = new BeanUsuario();
-        beanU.setIdUsuario(2);
+        session = ActionContext.getContext().getSession();
+        int idUsuario = Integer.parseInt(session.get("id").toString());
+        beanU.setIdUsuario(idUsuario);
         beanE.setUsuario(beanU);
         setCodigo(generarCodigo(getUnaEncuesta().getNombre().trim()));
         beanE.setCodigo(getCodigo());
@@ -280,7 +331,10 @@ public class ControllerCreacion {
         setMensaje("");
         setTipoMensaje("");
         DaoCreacion daoC = new DaoCreacion();
-        setMisEncuestas(daoC.cosultarEncuestas(2));
+        session = ActionContext.getContext().getSession();
+        int idUsuario = Integer.parseInt(session.get("id").toString());
+        System.out.println("44444444444444444444444" + idUsuario);
+        setMisEncuestas(daoC.cosultarEncuestas(idUsuario));
         return SUCCESS;
     }
 
@@ -571,7 +625,7 @@ public class ControllerCreacion {
         DaoCreacion daoC = new DaoCreacion();
         setMisOpciones(daoC.generarGraficaPregunta(getUnaPregunta().getIdPregunta()));
         setUnaPregunta(daoC.consultarPregunta(getUnaPregunta().getIdPregunta()));
-        
+
         int tamanoLista = getMisOpciones().size();
         int acu = 0;
         for (int i = 0; i < getMisOpciones().size(); i++) {
@@ -620,6 +674,84 @@ public class ControllerCreacion {
         }
 
         return SUCCESS;
+    }
+
+    public String cargarPreguntasUsuario() {
+        setAccion("");
+        setMensaje("");
+        setTipoMensaje("");
+        DaoCreacion daoC = new DaoCreacion();
+        session = ActionContext.getContext().getSession();
+        int idUsuario = Integer.parseInt(session.get("id").toString());
+        setMisEncuestasUsuario(daoC.cosultarEncuestasUsuario(idUsuario));
+        System.out.println("" + getMisEncuestasUsuario());
+        return SUCCESS;
+    }
+
+    public String dameUnaPregunta() {
+        setAccion("");
+        setMensaje("");
+        setTipoMensaje("");
+        DaoCreacion daoC = new DaoCreacion();
+        session = ActionContext.getContext().getSession();
+        int idUsuario = Integer.parseInt(session.get("id").toString());
+
+        try {
+            setUnaPregunta(daoC.dameUnaPregunta(getUnaEncuesta().getIdEncuesta(), getUnaAplica().getIdAplica()));
+            if (getUnaPregunta() != null) {
+                if (getUnaPregunta().getTipo().getIdTipo() == 3) {
+                    setMisOpciones(daoC.cosultarOpciones(getUnaPregunta().getIdPregunta()));
+                    setIdAplica(getUnaAplica().getIdAplica());
+                    return SUCCESS;
+                } else {
+                    setIdAplica(getUnaAplica().getIdAplica());
+                    setMisOpciones(daoC.cosultarOpciones(getUnaPregunta().getIdPregunta()));
+                    return SUCCESS;
+                }
+            } else {
+                return ERROR;
+            }
+        } catch (Exception e) {
+            return ERROR;
+        }
+    }
+
+    public String registrarRespuestaOpcion() {
+        setAccion("");
+        setMensaje("");
+        setTipoMensaje("");
+        DaoCreacion daoC = new DaoCreacion();
+        if (daoC.registrarRespuestaOpcion(getUnaAplica().getIdAplica(), getUnaPregunta().getIdPregunta(), getOpcion())) {
+            return SUCCESS;
+        } else {
+            return ERROR;
+        }
+    }
+
+    public String registrarRespuestaAbierta() {
+        setAccion("");
+        setMensaje("");
+        setTipoMensaje("");
+        DaoCreacion daoC = new DaoCreacion();
+        if (daoC.registrarRespuestaAbierta(getUnaPregunta().getPregunta(), getUnaAplica().getIdAplica(), getUnaPregunta().getIdPregunta())) {
+            return SUCCESS;
+        } else {
+            return ERROR;
+        }
+    }
+
+    public String registrarAplica() {
+        setAccion("");
+        setMensaje("");
+        setTipoMensaje("");
+        DaoCreacion daoC = new DaoCreacion();
+        session = ActionContext.getContext().getSession();
+        int idUsuario = Integer.parseInt(session.get("id").toString());
+        if (daoC.registrarAplica(getCodigo(), idUsuario)) {
+            return SUCCESS;
+        } else {
+            return ERROR;
+        }
     }
 
 }

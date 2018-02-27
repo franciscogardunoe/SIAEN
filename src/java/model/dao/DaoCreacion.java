@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.bean.BeanAplica;
 import model.bean.BeanEncuesta;
 import model.bean.BeanPregunta;
 import model.bean.BeanTipo;
@@ -491,5 +492,167 @@ public class DaoCreacion {
             }
         }
         return res;
+    }
+
+    public List<BeanAplica> cosultarEncuestasUsuario(int idUsuario) {
+        List<BeanAplica> lista = new ArrayList<>();
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_consultarEncuestasAplicadas ?");
+            pstm.setInt(1, idUsuario);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                BeanAplica unaAplica = new BeanAplica();
+                unaAplica.setIdAplica(rs.getInt("idAplica"));
+                unaAplica.setFechaAplicacion(rs.getString("fechaAplicacion"));
+                BeanEncuesta unaEncuesta = new BeanEncuesta();
+                unaEncuesta.setIdEncuesta(rs.getInt("idEncuesta"));
+                unaEncuesta.setNombre(rs.getString("nombre"));
+                unaEncuesta.setCodigo(rs.getString("codigo"));
+                BeanUsuario unUsuario = new BeanUsuario();
+                unUsuario.setIdUsuario(rs.getInt("idUsuario"));
+                unaEncuesta.setUsuario(unUsuario);
+                unaAplica.setUsuario(unUsuario);
+                unaAplica.setEncuesta(unaEncuesta);
+                lista.add(unaAplica);
+            }
+        } catch (SQLException esql) {
+            System.out.println("Excepción SQL: " + esql.getMessage());
+        } catch (Exception e) {
+            System.out.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Excepción: " + ex.getMessage());
+            }
+        }
+        return lista;
+    }
+
+    public BeanPregunta dameUnaPregunta(int idEncuesta, int idAplica) {
+        BeanPregunta unaPregunta = new BeanPregunta();
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("pa_dameUnaPregunta ?,?");
+            pstm.setInt(1, idEncuesta);
+            pstm.setInt(2, idAplica);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                unaPregunta.setIdPregunta(rs.getInt("idPregunta"));
+                unaPregunta.setPregunta(rs.getString("pregunta"));
+                unaPregunta.setObligatoria(rs.getInt("obligatoria"));
+                BeanTipo unTipo = new BeanTipo();
+                unTipo.setIdTipo(rs.getInt("idTipo"));
+                unaPregunta.setTipo(unTipo);
+            }
+        } catch (SQLException esql) {
+            System.out.println("Excepción SQL: " + esql.getMessage());
+        } catch (Exception e) {
+            System.out.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Excepción: " + ex.getMessage());
+            }
+        }
+        return unaPregunta;
+    }
+
+    public boolean registrarRespuestaOpcion(int idAplica, int idPregunta, int idOpcion) {
+        boolean resultado = false;
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_registrarRespuestaOpcion ?,?,?");
+            pstm.setInt(1, idAplica);
+            pstm.setInt(2, idPregunta);
+            pstm.setInt(3, idOpcion);
+            resultado = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            System.err.println("Excepción SQL: " + ex.getMessage());
+            return true;
+        } catch (Exception e) {
+            System.err.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception exc) {
+                System.err.println("Excepción: " + exc.getMessage());
+            }
+        }
+        return resultado;
+    }
+
+    public boolean registrarRespuestaAbierta(String respuestaAbierta, int idAplica, int idPregunta) {
+        boolean resultado = false;
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_registrarRespuestaAbierta ?,?,?");
+            pstm.setString(1, respuestaAbierta);
+            pstm.setInt(2, idAplica);
+            pstm.setInt(3, idPregunta);
+            resultado = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            System.err.println("Excepción SQL: " + ex.getMessage());
+            return true;
+        } catch (Exception e) {
+            System.err.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception exc) {
+                System.err.println("Excepción: " + exc.getMessage());
+            }
+        }
+        return resultado;
+    }
+
+    public boolean registrarAplica(String codigo, int idUsuario) {
+        boolean resultado = false;
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_registrarAplica ?,?");
+            pstm.setString(1, codigo);
+            pstm.setInt(2, idUsuario);
+            resultado = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            System.err.println("Excepción SQL: " + ex.getMessage());
+            return true;
+        } catch (Exception e) {
+            System.err.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception exc) {
+                System.err.println("Excepción: " + exc.getMessage());
+            }
+        }
+        return resultado;
     }
 }

@@ -12,7 +12,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Informe | Pregunta</title>
+        <title>Pregunta | Contestar</title>
         <!-- Bootstrap Styles-->
         <link href="<%=context%>/assets/css/bootstrap.css" rel="stylesheet" />
         <!-- FontAwesome Styles-->
@@ -34,7 +34,7 @@
                 $(document).ready(function ()
                 {
                 <s:set name="a" value="accion"/>
-                <s:if test="%{#a!= '' }">
+                <s:if test="%{#a != '' }">
                     swal("¡<s:property value="accion"/>!", "<s:property value="mensaje"/>", "<s:property value="tipoMensaje"/>");
                 });
                 </s:if>
@@ -96,19 +96,58 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h1 class="page-header">
-                                Informe <small> Pregunta</small>
+                                Pregunta <small> Contestar</small>
                             </h1>
-
-
-                            <div class="row">
-                                <div class="col-md-12">
+                            <div class="row">                 
+                                <div class="col-md-12">    
+                                    <!-- Advanced Tables -->
                                     <div class="panel panel-default">
-                                        <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+                                        <div class="panel-heading">
+                                            Mis Encuestas
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <s:set name="tip" value="unaPregunta.tipo.idTipo"/>
+                                                <s:if test="%{#tip==3}">
+                                                    <s:property value="unaPregunta.pregunta"/>
+                                                    <form role="form" name="consultar" action="<%=context%>/registrarRespuestaAbierta" method="POST">
+                                                        <input id="idAplica" name="unaAplica.idAplica" value="<s:property value="idAplica"/>" hidden=""/>
+                                                        <input id="idAplica" name="unaPregunta.idPregunta" value="<s:property value="unaPregunta.idPregunta"/>" hidden=""/>
+                                                        <div class="form-group">
+                                                            <label>Descripción</label>
+                                                            <textarea type=text" class="form-control" rows="3" name="unaPregunta.pregunta" id="descripcion" placeholder="Descripción" max="150"></textarea>
+                                                        </div> 
+                                                        <button type="submit" class="btn btn-primary">Registrar</button>
+                                                    </form>
+                                                </s:if>
+                                                <s:if test="%{#tip==1}">
+                                                    <form role="form" name="consultar" action="<%=context%>/registrarRespuestaOpcion" method="POST">
+                                                        <input id="idAplica" name="unaAplica.idAplica" value="<s:property value="idAplica"/>" hidden=""/>
+                                                        <input id="idAplica" name="unaPregunta.idPregunta" value="<s:property value="unaPregunta.idPregunta"/>" hidden=""/>
+                                                        <s:property value="unaPregunta.pregunta"/><br></br>
+                                                        <s:iterator value="misOpciones" status="stet"> 
+                                                            <input type="radio" name="opcion" value="<s:property value="idOpcion"/>"> <s:property value="opcion"/><br></br>
+                                                            </s:iterator>
+                                                            <button type="submit" class="btn btn-primary">Registrar</button>
+                                                    </form>
+                                                </s:if>
+                                                <s:if test="%{#tip==2}">
+                                                    <form role="form" name="consultar" action="<%=context%>/registrarRespuestaOpcion" method="POST">
+                                                        <input id="idAplica" name="unaAplica.idAplica" value="<s:property value="aplica.idAplica"/>" hidden=""/>
+                                                        <input id="idAplica" name="unaPregunta.idPregunta" value="<s:property value="unaPregunta.idPregunta"/>" hidden=""/>
+                                                        <s:property value="unaPregunta.pregunta"/><br></br>
+                                                        <s:iterator value="misOpciones" status="stet"> 
+                                                            <input type="radio" name="opcion" value="<s:property value="idOpcion"/>" checked> Male<br></br>
+                                                            </s:iterator>                                                       
+                                                            <button type="submit" class="btn btn-primary">Registrar</button>
+                                                    </form>
+                                                </s:if>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!--End Advanced Tables -->
                                 </div>
-
                             </div>
-
                         </div>
                     </div> 
                     <!-- /. ROW  -->
@@ -128,74 +167,6 @@
         <script src="<%=context%>/assets/js/jquery.metisMenu.js"></script>
         <!-- Custom Js -->
         <script src="<%=context%>/assets/js/custom-scripts.js"></script>
-
-
-        <script lang="es" >
-                Highcharts.chart('container', {
-                    chart: {
-                        plotBackgroundColor: null,
-                        plotBorderWidth: null,
-                        plotShadow: false,
-                        type: 'pie'
-                    },
-                    title: {
-                        text: '¿<s:property value="unaPregunta.pregunta"/>?'
-                    },
-                    tooltip: {
-                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                    },
-                    plotOptions: {
-                        pie: {
-                            allowPointSelect: true,
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: false
-                            },
-                            showInLegend: true
-                        }
-                    },
-                    series: [{
-                            name: 'Porcentaje preferencia',
-                            colorByPoint: true,
-                            data: [{
-                                    name: '<s:property value="opcion1"/>',
-                                    y: <s:property value="valor1"/>
-                                }, {
-                                    name: '<s:property value="opcion2"/>',
-                                    y: <s:property value="valor2"/>
-                                }, {
-                                    name: '<s:property value="opcion3"/>',
-                                    y: <s:property value="valor3"/>
-                                }, {
-                                    name: '<s:property value="opcion4"/>',
-                                    y: <s:property value="valor4"/>
-                                }, {
-                                    name: '<s:property value="opcion5"/>',
-                                    y: <s:property value="valor5"/>
-                                }]
-                        }]
-                });
-        </script>
-
-        <script>
-            function tildes_unicode(str) {
-                str = str.replace('á', '\u00e1');
-                str = str.replace('é', '\u00e9');
-                str = str.replace('í', '\u00ed');
-                str = str.replace('ó', '\u00f3');
-                str = str.replace('ú', '\u00fa');
-
-                str = str.replace('Á', '\u00c1');
-                str = str.replace('É', '\u00c9');
-                str = str.replace('Í', '\u00cd');
-                str = str.replace('Ó', '\u00d3');
-                str = str.replace('Ú', '\u00da');
-
-                str = str.replace('ñ', '\u00f1');
-                str = str.replace('Ñ', '\u00d1');
-                return str;
-            }
-        </script>
     </body>
 </html>
 

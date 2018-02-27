@@ -80,5 +80,29 @@
         <action name="generarGraficaPregunta" class="model.controller.ControllerCreacion" method="generarGraficaPregunta">
             <result name="success">vistas/administrador/informe/graficasPreguntas.jsp</result>
         </action>
+        
+        <action name="cargarPreguntasUsuario" class="model.controller.ControllerCreacion" method="cargarPreguntasUsuario">
+            <result name="success">vistas/administrador/aplicacion/encuestasAplicadas.jsp</result>
+        </action>
+        
+        <action name="dameUnaPregunta" class="model.controller.ControllerCreacion" method="dameUnaPregunta">
+            <result name="success">vistas/administrador/aplicacion/preguntaAbierta.jsp</result>
+            <result name="error">vistas/administrador/aplicacion/encuestaTerminada.jsp</result>
+        </action>
+        
+        <action name="registrarRespuestaOpcion" class="model.controller.ControllerCreacion" method="registrarRespuestaOpcion">
+            <result name="success" type="chain">dameUnaPregunta</result>
+            <result name="error" type="chain">dameUnaPregunta</result>
+        </action>
+        
+        <action name="registrarRespuestaAbierta" class="model.controller.ControllerCreacion" method="registrarRespuestaAbierta">
+            <result name="success" type="chain">dameUnaPregunta</result>
+            <result name="error" type="chain">dameUnaPregunta</result>
+        </action>
+        
+        <action name="registrarAplica" class="model.controller.ControllerCreacion" method="registrarAplica">
+            <result name="success" type="chain">cargarPreguntasUsuario</result>
+            <result name="error" type="chain">cargarPreguntasUsuario</result>
+        </action>
     </package>
 </struts>

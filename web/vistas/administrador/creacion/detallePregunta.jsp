@@ -75,7 +75,7 @@
                             <a class="active-menu" href="<%=context%>/consultarEncuestas"><i class="fa fa-dashboard"></i>Encuestas creadas</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-desktop"></i>Encuestas contestadas</a>
+                            <a href="<%=context%>/cargarPreguntasUsuario"><i class="fa fa-desktop"></i>Encuestas contestadas</a>
                         </li>
                     </ul>
 
