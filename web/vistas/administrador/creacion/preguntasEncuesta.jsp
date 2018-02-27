@@ -121,7 +121,6 @@
                                                         <label>Nombre:</label> <s:property value="unaEncuesta.nombre"/><br></br>
                                                         <label>Descripción:</label> <s:property value="unaEncuesta.descripcion"/><br></br>
                                                         <label>Fecha Creación:</label> <s:property value="unaEncuesta.fechaCreacion"/><br></br>
-                                                        <label>Código:</label> <s:property value="unaEncuesta.codigo"/><br></br>
                                                         <button class="btn btn-warning btn pull-right" data-toggle="modal" data-target="#editarEncuesta">
                                                             <i class="fa fa-pencil"></i>&nbsp; Modificar
                                                         </button>
@@ -152,7 +151,7 @@
                                                 <div class="panel-body">
                                                     Numero de personas que han constado la encuesta
                                                     <div class="table-responsive">
-                                                        <strong><h2>15</h2></strong>
+                                                        <strong><h2><s:property value="totalAplicadas"/></h2></strong>
                                                     </div>
                                                 </div>
                                             </div>
@@ -188,7 +187,7 @@
                                                     <s:iterator value="misPreguntas" status="stet"> 
                                                         <tr>
                                                             <td><s:property value="%{#stet.count}"/></td>
-                                                            <td><s:property value="pregunta"/></td>
+                                                            <td>¿<s:property value="pregunta"/>?</td>
                                                             <td>
                                                                 <s:set name="obli" value="obligatoria"/>
                                                                 <s:if test="%{#obli==1}">
@@ -200,11 +199,21 @@
                                                             </td>
                                                             <td><s:property value="tipo.tipo"/></td>
                                                             <div class="container">
-                                                                <form role="form" name="consultar" action="<%=context%>/consultarPregunta" method="POST">
-                                                                    <input id="idPregunta" name="unaPregunta.idPregunta" value="<s:property value="idPregunta"/>" hidden=""/>
-                                                                    <input id="codigo" name="codigo" value="<s:property value="codigo"/>" hidden=""/>
-                                                                    <td><button type="submit" class="btn btn-info" title="Ver informes"><i class="fa fa-signal"></i></button></td>
-                                                                </form>
+                                                                <s:set name="tipos" value="tipo.tipo"/>
+                                                                <s:if test="%{#tipos!='Abierta'}">
+                                                                    <form role="form" name="consultar" action="<%=context%>/generarGraficaPregunta" method="POST">
+                                                                        <input id="idPregunta" name="unaPregunta.idPregunta" value="<s:property value="idPregunta"/>" hidden=""/>
+                                                                        <input id="codigo" name="codigo" value="<s:property value="codigo"/>" hidden=""/>
+                                                                        <td><button type="submit" class="btn btn-info" title="Ver informes"><i class="fa fa-signal"></i></button></td>
+                                                                    </form>
+                                                                </s:if>
+                                                                <s:else>
+                                                                    <form role="form" name="consultar" action="<%=context%>/generarGraficaPregunta" method="POST">
+                                                                        <input id="idPregunta" name="unaPregunta.idPregunta" value="<s:property value="idPregunta"/>" hidden=""/>
+                                                                        <input id="codigo" name="codigo" value="<s:property value="codigo"/>" hidden=""/>
+                                                                        <td><button type="submit" class="btn btn-info" title="Ver informes" disabled="true"><i class="fa fa-signal"></i></button></td>
+                                                                    </form>
+                                                                </s:else> 
                                                                 <form role="form" name="consultar" action="<%=context%>/consultarPregunta" method="POST">
                                                                     <input id="idPregunta" name="unaPregunta.idPregunta" value="<s:property value="idPregunta"/>" hidden=""/>
                                                                     <input id="codigo" name="codigo" value="<s:property value="codigo"/>" hidden=""/>
@@ -267,7 +276,7 @@
                                                                                                         <input type="text" id="codigo" name="codigo" value="<s:property value="unaEncuesta.codigo"/>" hidden="">
                                                                                                             <div class="form-group">
                                                                                                                 <label>Pregunta</label>
-                                                                                                                <textarea type=text" class="form-control" rows="3" name="unaPregunta.pregunta" id="pregunta" placeholder="Pregunta" max="150"></textarea>
+                                                                                                                <textarea type=text" class="form-control" rows="3" name="unaPregunta.pregunta" id="pregunta" placeholder="Pregunta" max="150" required=""></textarea>
                                                                                                             </div> 
                                                                                                             <div class="form-group">
                                                                                                                 <label>Pregunta obligatoria</label>

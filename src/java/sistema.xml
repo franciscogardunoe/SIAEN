@@ -76,6 +76,9 @@
             <result name="success" type="chain">consultarPregunta</result>
             <result name="error" type="chain">consultarPregunta</result>
         </action>
-
+        
+        <action name="generarGraficaPregunta" class="model.controller.ControllerCreacion" method="generarGraficaPregunta">
+            <result name="success">vistas/administrador/informe/graficasPreguntas.jsp</result>
+        </action>
     </package>
 </struts>

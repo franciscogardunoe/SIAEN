@@ -45,22 +45,18 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.jsp">Dream</a>
+                    <a class="navbar-brand" href="<%=context%>/vistaPrincipal"  >SIAEN</a>
                 </div>
 
-                <ul class="nav navbar-top-links navbar-right">                                   
-                    <!-- /.dropdown -->
+                <ul class="nav navbar-top-links navbar-right">
+                    <li class="name">¡Hola <s:property value="#session.name"/>!</li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
                             <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                            </li>
                             <li class="divider"></li>
-                            <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            <li><a href="<%=context%>/cerrarSesion"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
                             </li>
                         </ul>
                         <!-- /.dropdown-user -->
@@ -71,58 +67,15 @@
             <!--/. NAV TOP  -->
             <nav class="navbar-default navbar-side" role="navigation">
                 <div class="sidebar-collapse">
-                    <ul class="nav" id="main-menu">
-
+                    <ul class="nav" id="main-menu"> 
                         <li>
-                            <a href="index.jsp"><i class="fa fa-dashboard"></i> Dashboard</a>
+                            <a  href="<%=context%>/vistaPrincipal"><i class="fa fa-fw fa-file"></i> Inicio</a>
                         </li>
                         <li>
-                            <a href="ui-elements.jsp"><i class="fa fa-desktop"></i> UI Elements</a>
+                            <a class="active-menu" href="<%=context%>/consultarEncuestas"><i class="fa fa-dashboard"></i>Encuestas creadas</a>
                         </li>
                         <li>
-                            <a href="chart.jsp"><i class="fa fa-bar-chart-o"></i> Charts</a>
-                        </li>
-                        <li>
-                            <a href="tab-panel.jsp"><i class="fa fa-qrcode"></i> Tabs & Panels</a>
-                        </li>
-
-                        <li>
-                            <a href="table.jsp"><i class="fa fa-table"></i> Responsive Tables</a>
-                        </li>
-                        <li>
-                            <a href="form.jsp"><i class="fa fa-edit"></i> Forms </a>
-                        </li>
-
-
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Link</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Link</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Link<span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Link</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Link</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Link</a>
-                                        </li>
-
-                                    </ul>
-
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="active-menu" href="empty.jsp"><i class="fa fa-fw fa-file"></i> Empty Page</a>
+                            <a href="#"><i class="fa fa-desktop"></i>Encuestas contestadas</a>
                         </li>
                     </ul>
 
@@ -156,7 +109,7 @@
                                                     </div>
                                                     <div class="panel-body">
                                                         <div class="table-responsive">
-                                                            <label>Pregunta:</label> <s:property value="unaPregunta.pregunta"/><br></br>
+                                                            <label>Pregunta:</label> ¿<s:property value="unaPregunta.pregunta"/>?<br></br>
                                                             <label>Obligatoria:</label>
                                                             <s:set name="obli" value="obligatoria"/>
                                                             <s:if test="%{#obli==1}">
@@ -166,9 +119,6 @@
                                                                 No
                                                             </s:else> <br></br>
                                                             <label>Tipo:</label> <s:property value="unaPregunta.tipo.tipo"/><br></br>                                     
-                                                            <button class="btn btn-warning btn pull-right" data-toggle="modal" data-target="#editarEncuesta">
-                                                                <i class="fa fa-pencil"></i>&nbsp; Modificar
-                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>

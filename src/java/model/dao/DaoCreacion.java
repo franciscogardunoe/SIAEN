@@ -320,8 +320,8 @@ public class DaoCreacion {
         }
         return resultado;
     }
-    
-     public boolean eliminarPregunta(int idPregunta) {
+
+    public boolean eliminarPregunta(int idPregunta) {
         boolean resultado = false;
         try {
             conexion = ConexionSQL.obtenerConexion();
@@ -347,8 +347,8 @@ public class DaoCreacion {
         }
         return resultado;
     }
-     
-     public List<BeanOpcion> cosultarOpciones(int idPregunta) {
+
+    public List<BeanOpcion> cosultarOpciones(int idPregunta) {
         List<BeanOpcion> lista = new ArrayList<>();
         try {
             conexion = ConexionSQL.obtenerConexion();
@@ -356,9 +356,9 @@ public class DaoCreacion {
             pstm.setInt(1, idPregunta);
             rs = pstm.executeQuery();
             while (rs.next()) {
-                BeanOpcion unaOpcion=new BeanOpcion();
+                BeanOpcion unaOpcion = new BeanOpcion();
                 unaOpcion.setIdOpcion(rs.getInt("idOpcion"));
-                unaOpcion.setOpcion(rs.getString("opcion"));             
+                unaOpcion.setOpcion(rs.getString("opcion"));
                 BeanPregunta unaPregunta = new BeanPregunta();
                 unaPregunta.setIdPregunta(rs.getInt("idPregunta"));
                 unaPregunta.setPregunta(rs.getString("pregunta"));
@@ -388,8 +388,8 @@ public class DaoCreacion {
         }
         return lista;
     }
-     
-        public BeanPregunta consultarPregunta(int idPregunta) {
+
+    public BeanPregunta consultarPregunta(int idPregunta) {
         BeanPregunta unaPregunta = new BeanPregunta();
         try {
             conexion = ConexionSQL.obtenerConexion();
@@ -400,13 +400,13 @@ public class DaoCreacion {
                 unaPregunta.setIdPregunta(rs.getInt("idPregunta"));
                 unaPregunta.setPregunta(rs.getString("pregunta"));
                 unaPregunta.setObligatoria(rs.getInt("obligatoria"));
-                BeanTipo unTipo=new BeanTipo();
+                BeanTipo unTipo = new BeanTipo();
                 unTipo.setTipo(rs.getString("tipo"));
                 unaPregunta.setTipo(unTipo);
-                BeanEncuesta unaEncuesta=new BeanEncuesta(); 
+                BeanEncuesta unaEncuesta = new BeanEncuesta();
                 unaEncuesta.setNombre(rs.getString("nombre"));
                 unaEncuesta.setDescripcion(rs.getString("descripcion"));
-                unaPregunta.setEncuesta(unaEncuesta);      
+                unaPregunta.setEncuesta(unaEncuesta);
             }
         } catch (SQLException esql) {
             System.out.println("Excepción SQL: " + esql.getMessage());
@@ -427,4 +427,69 @@ public class DaoCreacion {
         return unaPregunta;
     }
 
+    public List<BeanOpcion> generarGraficaPregunta(int idPregunta) {
+        List<BeanOpcion> lista = new ArrayList<>();
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_generarGrafica ?");
+            pstm.setInt(1, idPregunta);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                BeanOpcion unaOpcion = new BeanOpcion();
+                unaOpcion.setIdOpcion(rs.getInt("idOpcion"));
+                unaOpcion.setOpcion(rs.getString("opcion"));
+                unaOpcion.setTotal(rs.getInt("total"));
+                BeanPregunta unaPregunta = new BeanPregunta();
+                unaPregunta.setIdPregunta(rs.getInt("idPregunta"));
+                unaPregunta.setPregunta(rs.getString("pregunta"));
+                unaOpcion.setPregunta(unaPregunta);
+                lista.add(unaOpcion);
+            }
+        } catch (SQLException esql) {
+            System.out.println("Excepción SQL: " + esql.getMessage());
+        } catch (Exception e) {
+            System.out.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Excepción: " + ex.getMessage());
+            }
+        }
+        return lista;
+    }
+
+    public int cosultarNumeroAplicaciones(String codigo) {
+        int res = 0;
+        try {
+            conexion = ConexionSQL.obtenerConexion();
+            pstm = conexion.prepareStatement("EXECUTE pa_numeroAplicaciones ?");
+            pstm.setString(1, codigo);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                res = rs.getInt("numeroAplicaciones");
+            }
+        } catch (SQLException esql) {
+            System.out.println("Excepción SQL: " + esql.getMessage());
+        } catch (Exception e) {
+            System.out.println("Excepción: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Excepción: " + ex.getMessage());
+            }
+        }
+        return res;
+    }
 }

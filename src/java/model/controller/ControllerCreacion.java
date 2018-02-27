@@ -35,12 +35,19 @@ public class ControllerCreacion {
     private String accion;
     private String mensaje;
     private String tipoMensaje;
+    
+    private int totalAplicadas;
 
     String opcion1;
+    float valor1;
     String opcion2;
+    float valor2;
     String opcion3;
+    float valor3;
     String opcion4;
+    float valor4;
     String opcion5;
+    float valor5;
 
     public ControllerCreacion() {
     }
@@ -181,6 +188,54 @@ public class ControllerCreacion {
         this.numeroOpciones = numeroOpciones;
     }
 
+    public float getValor1() {
+        return valor1;
+    }
+
+    public void setValor1(float valor1) {
+        this.valor1 = valor1;
+    }
+
+    public float getValor2() {
+        return valor2;
+    }
+
+    public void setValor2(float valor2) {
+        this.valor2 = valor2;
+    }
+
+    public float getValor3() {
+        return valor3;
+    }
+
+    public void setValor3(float valor3) {
+        this.valor3 = valor3;
+    }
+
+    public float getValor4() {
+        return valor4;
+    }
+
+    public void setValor4(float valor4) {
+        this.valor4 = valor4;
+    }
+
+    public float getValor5() {
+        return valor5;
+    }
+
+    public void setValor5(float valor5) {
+        this.valor5 = valor5;
+    }
+
+    public int getTotalAplicadas() {
+        return totalAplicadas;
+    }
+
+    public void setTotalAplicadas(int totalAplicadas) {
+        this.totalAplicadas = totalAplicadas;
+    }
+
     public String registrarEncuesta() {
         DaoCreacion daoC = new DaoCreacion();
         BeanEncuesta beanE = new BeanEncuesta();
@@ -228,7 +283,7 @@ public class ControllerCreacion {
         setMisEncuestas(daoC.cosultarEncuestas(2));
         return SUCCESS;
     }
-    
+
     public String consultarEncuesta() {
         setAccion("");
         setMensaje("");
@@ -237,6 +292,7 @@ public class ControllerCreacion {
         setUnaEncuesta(daoC.consultarEncuesta(getCodigo()));
         setMisPreguntas(daoC.cosultarPreguntas(getCodigo()));
         setNumeroPreguntas(getMisPreguntas().size());
+        setTotalAplicadas(daoC.cosultarNumeroAplicaciones(getCodigo()));
         System.out.println("Código: " + codigo);
         System.out.println(getMisPreguntas());
         return SUCCESS;
@@ -506,6 +562,64 @@ public class ControllerCreacion {
             setTipoMensaje("error");
             return ERROR;
         }
+    }
+
+    public String generarGraficaPregunta() {
+        setAccion("");
+        setMensaje("");
+        setTipoMensaje("");
+        DaoCreacion daoC = new DaoCreacion();
+        setMisOpciones(daoC.generarGraficaPregunta(getUnaPregunta().getIdPregunta()));
+        setUnaPregunta(daoC.consultarPregunta(getUnaPregunta().getIdPregunta()));
+        
+        int tamanoLista = getMisOpciones().size();
+        int acu = 0;
+        for (int i = 0; i < getMisOpciones().size(); i++) {
+            acu = acu + getMisOpciones().get(i).getTotal();
+        }
+
+        if (tamanoLista == 1) {
+            setOpcion1(getMisOpciones().get(0).getOpcion());
+            setValor1((getMisOpciones().get(0).getTotal() * 100) / acu);
+        }
+        if (tamanoLista == 2) {
+            setOpcion1(getMisOpciones().get(0).getOpcion());
+            setValor1((getMisOpciones().get(0).getTotal() * 100) / acu);
+            setOpcion2(getMisOpciones().get(1).getOpcion());
+            setValor2((getMisOpciones().get(1).getTotal() * 100) / acu);
+        }
+        if (tamanoLista == 3) {
+            setOpcion1(getMisOpciones().get(0).getOpcion());
+            setValor1((getMisOpciones().get(0).getTotal() * 100) / acu);
+            setOpcion2(getMisOpciones().get(1).getOpcion());
+            setValor2((getMisOpciones().get(1).getTotal() * 100) / acu);
+            setOpcion3(getMisOpciones().get(2).getOpcion());
+            setValor3((getMisOpciones().get(2).getTotal() * 100) / acu);
+        }
+        if (tamanoLista == 4) {
+            setOpcion1(getMisOpciones().get(0).getOpcion());
+            setValor1((getMisOpciones().get(0).getTotal() * 100) / acu);
+            setOpcion2(getMisOpciones().get(1).getOpcion());
+            setValor2((getMisOpciones().get(1).getTotal() * 100) / acu);
+            setOpcion3(getMisOpciones().get(2).getOpcion());
+            setValor3((getMisOpciones().get(2).getTotal() * 100) / acu);
+            setOpcion4(getMisOpciones().get(3).getOpcion());
+            setValor4((getMisOpciones().get(3).getTotal() * 100) / acu);
+        }
+        if (tamanoLista == 5) {
+            setOpcion1(getMisOpciones().get(0).getOpcion());
+            setValor1((getMisOpciones().get(0).getTotal() * 100) / acu);
+            setOpcion2(getMisOpciones().get(1).getOpcion());
+            setValor2((getMisOpciones().get(1).getTotal() * 100) / acu);
+            setOpcion3(getMisOpciones().get(2).getOpcion());
+            setValor3((getMisOpciones().get(2).getTotal() * 100) / acu);
+            setOpcion4(getMisOpciones().get(3).getOpcion());
+            setValor4((getMisOpciones().get(3).getTotal() * 100) / acu);
+            setOpcion5(getMisOpciones().get(4).getOpcion());
+            setValor5((getMisOpciones().get(4).getTotal() * 100) / acu);
+        }
+
+        return SUCCESS;
     }
 
 }

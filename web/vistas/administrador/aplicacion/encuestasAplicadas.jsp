@@ -34,7 +34,7 @@
                 $(document).ready(function ()
                 {
                 <s:set name="a" value="accion"/>
-                <s:if test="%{#a!= '' }">
+                <s:if test="%{#a != '' }">
                     swal("¡<s:property value="accion"/>!", "<s:property value="mensaje"/>", "<s:property value="tipoMensaje"/>");
                 });
                 </s:if>
@@ -96,19 +96,55 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h1 class="page-header">
-                                Informe <small> Pregunta</small>
+                                Encuestas <small> Contestadas</small>
                             </h1>
-
-
-                            <div class="row">
-                                <div class="col-md-12">
+                            <div class="row">                 
+                                <div class="col-md-12">    
+                                    <!-- Advanced Tables -->
                                     <div class="panel panel-default">
-                                        <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+                                        <div class="panel-heading">
+                                            Mis Encuestas
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Código</th>
+                                                            <th>Nombre Encuesta</th>
+                                                            <th>Fecha Creación</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <s:iterator value="misEncuestas" status="stet"> 
+                                                            <tr>
+                                                                <td><s:property value="%{#stet.count}"/></td>
+                                                                <td><s:property value="codigo"/></td>
+                                                                <td><s:property value="nombre"/></td>
+                                                                <td><s:property value="fechaCreacion"/></td>
+                                                                <div class="container">                                                          
+                                                                    <form role="form" name="consultar" action="<%=context%>/consultarEncuesta" method="POST">
+                                                                        <input id="codigo" name="codigo" value="<s:property value="codigo"/>" hidden=""/>
+                                                                        <td><button type="submit" class="btn btn-primary" title="Ver detalles"><i class="fa fa-eye"></i></button></td>
+                                                                    </form>
+                                                                    <form role="form" id="eliminar" name="eliminar" action="<%=context%>/eliminarEncuesta" method="POST">
+                                                                        <input id="idEncuesta" name="unaEncuesta.idEncuesta" value="<s:property value="idEncuesta"/>" hidden=""/>
+                                                                        <td><button type="submit" class="btn btn-danger" title="Eliminar Encuesta"><i class="fa fa-times"></i></button></td>
+                                                                    </form>
+                                                                </div> 
+                                                            </tr>
+                                                        </s:iterator> 
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!--End Advanced Tables -->
                                 </div>
-
                             </div>
-
                         </div>
                     </div> 
                     <!-- /. ROW  -->
@@ -128,74 +164,6 @@
         <script src="<%=context%>/assets/js/jquery.metisMenu.js"></script>
         <!-- Custom Js -->
         <script src="<%=context%>/assets/js/custom-scripts.js"></script>
-        
-        
-        <script lang="es" >
-                Highcharts.chart('container', {
-                    chart: {
-                        plotBackgroundColor: null,
-                        plotBorderWidth: null,
-                        plotShadow: false,
-                        type: 'pie'
-                    },
-                    title: {
-                        text: '¿<s:property value="unaPregunta.pregunta"/>?'
-                    },
-                    tooltip: {
-                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                    },
-                    plotOptions: {
-                        pie: {
-                            allowPointSelect: true,
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: false
-                            },
-                            showInLegend: true
-                        }
-                    },
-                    series: [{
-                            name: 'Porcentaje preferencia',
-                            colorByPoint: true,
-                            data: [{
-                                    name: '<s:property value="opcion1"/>',
-                                    y: <s:property value="valor1"/>
-                                }, {
-                                    name: '<s:property value="opcion2"/>',
-                                    y: <s:property value="valor2"/>
-                                }, {
-                                    name: '<s:property value="opcion3"/>',
-                                    y: <s:property value="valor3"/>
-                                }, {
-                                    name: '<s:property value="opcion4"/>',
-                                    y: <s:property value="valor4"/>
-                                }, {
-                                    name: '<s:property value="opcion5"/>',
-                                    y: <s:property value="valor5"/>
-                                }]
-                        }]
-                });
-        </script>
-
-        <script>
-            function tildes_unicode(str) {
-                str = str.replace('á', '\u00e1');
-                str = str.replace('é', '\u00e9');
-                str = str.replace('í', '\u00ed');
-                str = str.replace('ó', '\u00f3');
-                str = str.replace('ú', '\u00fa');
-
-                str = str.replace('Á', '\u00c1');
-                str = str.replace('É', '\u00c9');
-                str = str.replace('Í', '\u00cd');
-                str = str.replace('Ó', '\u00d3');
-                str = str.replace('Ú', '\u00da');
-
-                str = str.replace('ñ', '\u00f1');
-                str = str.replace('Ñ', '\u00d1');
-                return str;
-            }
-        </script>
     </body>
 </html>
 

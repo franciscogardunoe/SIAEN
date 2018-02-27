@@ -16,6 +16,8 @@ public class BeanOpcion {
     private int estado;
     private BeanPregunta pregunta;
 
+    private int total;
+    
     public BeanOpcion() {
     }
 
@@ -57,6 +59,14 @@ public class BeanOpcion {
 
     public void setPregunta(BeanPregunta pregunta) {
         this.pregunta = pregunta;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
     
 }
