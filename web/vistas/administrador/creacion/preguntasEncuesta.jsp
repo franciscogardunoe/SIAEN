@@ -149,7 +149,7 @@
                                                     Informes
                                                 </div>
                                                 <div class="panel-body">
-                                                    Numero de personas que han constado la encuesta
+                                                    Numero de personas que han contestado la encuesta
                                                     <div class="table-responsive">
                                                         <strong><h2><s:property value="totalAplicadas"/></h2></strong>
                                                     </div>
